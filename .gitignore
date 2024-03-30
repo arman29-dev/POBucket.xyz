@@ -56,9 +56,10 @@ cover/
 *.pot
 
 # Django stuff:
+/Database
 *.log
 local_settings.py
-db.sqlite3
+*.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
@@ -138,6 +139,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+/media
 
 # mypy
 .mypy_cache/
