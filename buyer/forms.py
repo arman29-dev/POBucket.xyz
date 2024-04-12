@@ -6,8 +6,3 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = Buyer
         fields = ('fullname', 'email', 'phone', 'password')
-
-
-class LoginForm(forms.ModelForm):
-    class Meta:
-        model = Buyer
