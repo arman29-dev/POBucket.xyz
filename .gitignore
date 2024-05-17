@@ -134,6 +134,9 @@ venv.bak/
 .spyderproject
 .spyproject
 
+# figma files
+*.fig
+
 # Rope project settings
 .ropeproject
 
