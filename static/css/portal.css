@@ -1,0 +1,32 @@
+.profile-icon {
+    color: burlywood;
+    transition: 400ms;
+}
+
+.profile-icon:hover {
+    color: #5483b3;
+    margin-right: 7px;
+    transition: 400ms;
+}
+
+h2 {
+    color: #5483b3;;
+}
+
+.product-grid {
+    gap: 20px;
+}
+
+.card .card-body {
+    background-color: #c1e8ff;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-title, .card-text {
+    color: #052659;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}

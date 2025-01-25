@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import make_password as secure_password
 
-from .forms import RegistrationForm
+# from .forms import RegistrationForm
 from .models import Buyer, RouteError
+from seller.models import Product
 
 from . import authenticate
-
+from termcolor import cprint
+from sqlite3 import IntegrityError
 
 # index route (default)
 def index(request):
@@ -16,53 +19,103 @@ def index(request):
 def login(request):
     if request.method == 'GET':
         return render(request, 'loginAndRegister.html', 
-                      {'title': 'Login'})
+                      {'title': 'Buyer-Login'}
+                    )
 
     if request.method == 'POST':
-        buyer = Buyer.objects.get(email=request.POST.get('email'))
+        buyer = object()
+        try: buyer = Buyer.objects.get(email=request.POST.get('email')); cprint(buyer.email, 'green')
+        except Buyer.DoesNotExist:
+            return render(request, 'loginAndRegister.html', 
+                        {
+                            'loginErrorMsg': "Invalid email!!".upper(),
+                        }
+                    )
         try:
             if authenticate(buyer, password=request.POST.get('password')):
-                request.session[buyer.email] = {
-                    'id': buyer.id, 
-                    'fullname': buyer.fullname, 
-                    'phone': buyer.phone,
-                }
-                return redirect('buyer-portal')
+                request.session[buyer.email] = True
+                cprint(f"{buyer.email} authenticated successfully!!".upper(), 
+                       'green', attrs=['bold', 'blink'])
+                return redirect('buyer-portal', buyer=buyer.email)
 
             else:
                 return render(request, 'loginAndRegister.html', 
-                              {'message': 'Invalid emai or password!!'.upper(), 
-                               'title': 'Login'})
+                                {
+                                  'title': 'Buyer-Login',
+                                  'loginErrorMsg': 'Invalid emai or password!!'.upper()
+                                }
+                            )
 
         except Exception as E:
             error = RouteError(
-                errorTitle="Buyer Authentication",
-                errorMessage=E,
-                errorField='Login Route'
+                title="Buyer Authentication",
+                message=E,
+                field='Login Route'
             ); error.save()
 
             return render(request, 'loginAndRegister.html', 
-                          {'message': 'Invalid emai or password!!'.upper(), 
-                           'title': 'Login'})
+                            {
+                              'title': 'Buyer-Login',
+                              'loginErrorMsg': 'Unable to authenticate you!!'.upper()
+                            }
+                        )
 
 
 # register route
 def register(request):
     if request.method == 'GET':
         return render(request, 'loginAndRegister.html', 
-                      {'title': 'Register'})
+                      {'title': "Buyer-SignUp"}
+                    )
 
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('You are now registered')
 
-        else:
-            error = RouteError(
-                errorTitle="Invalid Form",
-                errorMessage=form.errors.as_text(),
-                errorField='Register Route'
-            ); error.save()
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm-password')
 
-            return HttpResponse('Something went wrong')
+        cprint(f"Entered Data: {username, email, password}", 'green')
+
+        if Buyer.objects.filter(email=email).exists():
+            return render(request, 'loginAndRegister.html',
+                          {
+                            'title': 'Buyer-SignUp',
+                            'signUpErrorMsg': 'Email already exists!!'.upper()
+                          }
+                        )
+
+        elif password == confirm_password:
+            cprint(f'Email: {email} is good to go!', 'green', attrs=['bold', 'blink'])
+            try:
+                buyer = Buyer(
+                    username=username,
+                    email=email,
+                    password=secure_password(password),
+                ); buyer.save()
+
+                return redirect('buyer-login')
+
+            except IntegrityError as IE:
+                error = RouteError(
+                    title="Buyer Registration",
+                    message=IE,
+                    field='Registration Route'
+                ); error.save()
+
+                return redirect('admin')
+
+
+# portal route
+def portal(request, buyer):
+    if request.method == 'GET':
+        products = Product.objects.all()
+        return render(request, 'portal.html',
+                      {
+                        'title': 'Buyer Portal',
+                        'products': products,
+                        'buyer': buyer
+                       }
+                    )
+
+    if request.method == 'POST': pass

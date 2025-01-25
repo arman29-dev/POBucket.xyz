@@ -12,7 +12,25 @@
 
     <title>POB•{{ title }}</title>
 </head>
-<body>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/portal.css' %}">
+<body style="background-color: #021024;">
+    <style>
+        .profile-icon {
+            color: white;
+            transition: 400ms;
+        }
+    
+        .profile-icon:hover {
+            color: #5483b3;
+            margin-right: 7px;
+            transition: 400ms;
+        }
+    
+        h2 {
+            color: white;;
+        }
+    </style>
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -32,12 +50,54 @@
                             <a class="nav-link" href="{% url 'buyer-history' %}">History</a>
                         </li>
                     </ul>
+                    <a class="d-flex profile-icon" href="{% url 'buyer-profile' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </nav>
     </header>
 
-    
+    <style>
+        .product-grid {
+            gap: 20px;
+        }
+        
+        .card .card-body {
+            background-color: #c1e8ff;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title, .card-text {
+            color: #052659;
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+    <main class="container p-5">
+        <h2 class="mb-5" align="center">Tech Projects</h2>
+        <section class="row product-grid">
+            {% for product in products %}
+            <article class="col-md-3 mb-3">
+                <div class="card h-100 shadow">
+                    <img src="{% static 'images/Beijing.png' %}" class="card-img-top">
+                    <div class="card-body">
+                        <h3 class="card-title">Product Name</h3>
+                        <p class="card-text">$ Price</p> 
+                    </div>
+                </div>
+            </article>
+            <br>
+            {% endfor %}
+        </section>
+    </main>
+
 </body>
 </html>
 

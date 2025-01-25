@@ -17,6 +17,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/bgStyle.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/loginAndRegister.css' %}">
+
 <body class="bg-custom">
 
     <header>
@@ -33,6 +34,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'site-index' %}">Home</a>
                         </li>
+                        <table>
+                            {{uid}}
+                        </table>
                         <li class="nav-item">
                             <a class="nav-link" href="seller/login/">Seller</a>
                         </li>
@@ -42,82 +46,128 @@
         </nav>
     </header>
 
-    <div class="wrapper" style="margin-top: 25%;">
-        <div class="card-switch">
-            <label class="switch">
-                <input type="checkbox" class="toggle">
-                <span class="slider"></span>
-                <span class="card-side"></span>
+    <section style="padding-top: 300px;">
+        <div class="wrapper">
+            <div class="card-switch">
+                <label class="switch">
+                    <input type="checkbox" class="toggle">
+                    <span class="slider"></span>
+                    <span class="card-side"></span>
+                    <div class="flip-card__inner">
+                        <div class="flip-card__front">
+                            <div class="title">Log in</div>
+                            {% if errorMsg %}
+                                <div id="login-error-message" style="color: red;">
+                                    <p><strong>{{ loginErrorMsg }}</strong></p>
+                                </div>
+                            {% endif %}
 
-                <div class="flip-card__inner">
-                    <div class="flip-card__front" id="Buyer-Login">
-                        <div class="title">Buyer Login</div>
+                            <form class="flip-card__form" method="post" onsubmit="return validateLoginForm()" action="{% url 'buyer-login' %}">
+                                {% csrf_token %}
+                                <input class="flip-card__input" id="email" name="email" placeholder="Email" type="email" required>
+                                <input class="flip-card__input" name="password" placeholder="Password" type="password" required>
+                                <button class="flip-card__btn">Let`s go!</button>
+                            </form>
+                        </div>
+                        <div class="flip-card__back">
+                            <div class="title">Sign up</div>
+                            {% if errorMsg %}
+                                <div id="sign-up-error-message" style="color: red;">
+                                    <p><strong>{{ signUpErrorMsg }}</strong></p>
+                                </div>
+                            {% endif %}
 
-                        {% if message %}
-                            <pre><i class="bi bi-exclamation-triangle-fill mx-1"></i><strong style="color: rgb(218, 96, 96);">{{ message }}</strong></pre>
-                        {% endif %}
-
-                        <form class="flip-card__form" method="post">
-                            {% csrf_token %}
-
-                            <div class="flip-card__input">
-                                <i class="bi bi-envelope-at-fill"></i>
-                                <input name="email" placeholder="Email" type="email" required>
-                            </div>
-
-                            <samp class="flip-card__input">
-                                <i class="bi bi-key-fill"></i>
-                                <input name="password" id="pswd" placeholder="Password" type="password" required>
-                            </samp>
-
-                            <button class="flip-card__btn">Login <i class="bi bi-box-arrow-in-right"></i></button>
-                        </form>
-
-                        <pre>Forgot Password?<br><a href="password-reset/">Reset Here</a></pre>
+                            <form class="flip-card__form" id="signupForm" method="post" onsubmit="return validateRegistrationForm()" action="{% url 'buyer-registration' %}">
+                                {% csrf_token %}
+                                <input class="flip-card__input" id="username" name="username" placeholder="@Username" type="text" required>
+                                <input class="flip-card__input" id="email" name="email" placeholder="Email" type="email" required>
+                                <input class="flip-card__input" id="password" name="password" placeholder="Password" type="password" required>
+                                <input class="flip-card__input" id="c-password" name="confirm-password" placeholder="Confirm Password" type="password" required>
+                                <button class="flip-card__btn">Sign Me Up!</button>
+                            </form>
+                        </div>
                     </div>
-
-                    <div class="flip-card__back" id="Buyer-Register">
-                        <div class="title">Buyer Register</div>
-
-                        <form class="flip-card__form" method="post" action="{% url 'buyer-registration' %}">
-                            {% csrf_token %}
-
-                            <span class="flip-card__input">
-                                <i class="bi bi-person-vcard-fill"></i>
-                                <input name="fullname" placeholder="Buyer's Full Name" type="text" required>
-                            </span>
-
-                            <span class="flip-card__input">
-                                <i class="bi bi-envelope-at-fill"></i>
-                                <input name="email" placeholder="Buyer's Email" type="email" required>
-                            </span>
-
-                            <span class="flip-card__input">
-                                <i class="bi bi-telephone-fill"></i>
-                                <input name="phone" placeholder="Buyer's Phone No." type="tel">
-                            </span>
-
-                            <span class="flip-card__input">
-                                <i class="bi bi-key"></i>
-                                <input name="password" placeholder="Password" type="password" required>
-                            </span>
-
-                            <button class="flip-card__btn">Register <i class="bi bi-person-plus"></i></button>
-                        </form>
-
-                        <!-- <pre>Are you a Seller? <br> <a href="/seller/register">Register Here</a></pre> -->
-                    </div>
-                </div>
-            </label>
+                </label>
+            </div>
         </div>
-    </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+    </script>
+
+    <script>
+        var emailRegex = /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+        var usernameRegex = /^@[a-z0-9_-]{3,15}$/;
+        var passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
+        var errorMessage = "";
+
+        function validateRegistrationForm() {
+            var username = document.getElementById("username").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("c-password").value;
+
+            if (!usernameRegex.test(username)) {
+            errorMessage = "Invalid username. Make sure to use '@' befor your username.";
+            } 
+            
+            else if (!emailRegex.test(email)) {
+            errorMessage = "Invalid email address. Make sure you've enter a valid email address.";
+            } 
+            
+            else if (!passwordRegex.test(password)) {
+            errorMessage = "Password should be >8 characters and contain ≥1 upper case, ≥1 lower case & ≥1 number.";
+            }
+
+            else if (password !== confirmPassword) {
+                errorMessage = "Passwords do not match. Make sure you've entered the same password in both fields.";
+            }
+
+            if (errorMessage) {
+                var errorDiv = document.getElementById("sign-up-error-message");
+
+                if (!errorDiv) {
+                    errorDiv = document.createElement("div");
+                    errorDiv.id = "sign-up-error-message";
+                    errorDiv.style.color = "red";
+                    document.querySelector(".flip-card__back").appendChild(errorDiv);
+                }
+
+                errorDiv.textContent = errorMessage;
+                return false;
+            }
+            return true;
+        }
+    
+        function validateLoginForm() {
+            var email = document.getElementById("email").value;
+            if (!emailRegex.test(email)) {
+                errorMessage = "Invalid email address. Make sure you've enter a valid email address.";
+            }
+
+            if (errorMessage) {
+                var errorDiv = document.getElementById("login-error-message");
+
+                if (!errorDiv) {
+                    errorDiv = document.createElement("div");
+                    errorDiv.id = "login-error-message";
+                    errorDiv.style.color = "red";
+                    document.querySelector(".flip-card__front").appendChild(errorDiv);
+                }
+
+                errorDiv.textContent = errorMessage;
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

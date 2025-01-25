@@ -2,12 +2,11 @@ from django.db import models
 from django.utils import timezone
 
 
-
 class Buyer(models.Model):
-    fullname = models.CharField(max_length=100)
+    username = models.CharField(max_length=100)
     email = models.EmailField(max_length=255, unique=True)
-    phone = models.CharField(max_length=20)
-    password = models.CharField(max_length=122)
+    phone = models.CharField(max_length=20, null=True)
+    password = models.CharField(max_length=256)
 
     def __str__(self):
         return self.email
