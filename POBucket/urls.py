@@ -31,4 +31,9 @@ urlpatterns = [
     path('', index, name='site-index'),
     path('admin/', admin.site.urls, name='admin'),
     path('buyer/', include('buyer.urls'), name='buyer-domain'),
+    path('seller/', include('seller.urls'), name='seller-route'),
 ]
+
+# Include URL patterns for serving media files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
