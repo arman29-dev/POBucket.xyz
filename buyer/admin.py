@@ -13,7 +13,7 @@ class HistoryAdmin(admin.ModelAdmin):
     search_fields = ('product_name', 'owner', 'date_of_purchase')
 
 class BuyerAdmin(admin.ModelAdmin):
-    list_display = ('email', 'fullname', 'phone')
+    list_display = ('email', 'username', 'phone')
     search_fields = ('id', 'email')
 
 
