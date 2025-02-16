@@ -23,4 +23,5 @@ urlpatterns = [
     path('login/', views.login, name='buyer-login'),
     path('register/', views.register, name='buyer-registration'),
     path('portal/<str:buyer>', views.portal, name='buyer-portal'),
+    path('history/', views.history, name='buyer-history') # TODO: Test route change later
 ]

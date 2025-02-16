@@ -1,0 +1,87 @@
+:root {
+    /* sqaure button */
+    --custom-delete-btn-color-size: 80px;
+}
+
+
+
+
+
+.history-container {
+    margin: 20px;
+
+}
+
+.custom-delete-btn {
+    width: var(--custom-delete-btn-color-size);
+    height: var(--custom-delete-btn-color-size);
+    padding: 2px !important;
+}
+
+.custom-delete-btn img {
+    width: 100%;
+    height: 100%;
+}
+
+
+body {
+    background-color: #111;
+    background-image:
+        linear-gradient(transparent 24px, rgba(255, 255, 255, 0.2) 25px),
+        linear-gradient(90deg, transparent 24px, rgba(255, 255, 255, 0.2) 25px);
+    background-size: 25px 25px;
+    min-height: 100vh;
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.history-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.history-container {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+
+@media screen and (max-width: 850px) {
+
+    :root {
+        --custom-delete-btn-color-size: 50px;
+    }
+
+    .is-flex-direction-row {
+        flex-direction: column !important;
+      }
+
+      .product-detail-container {
+        margin-top: 1rem;
+      }
+
+      .history-buttons-container {
+        margin-top: 1rem;
+      }
+
+      .history-product-name {
+        text-align: center;
+      }
+
+      .history-product-content {
+        text-align: center;
+        align-items: center;
+      }
+    
+      .custom-nav-item-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .navbar-end {
+        justify-content: center !important;
+      }
+}

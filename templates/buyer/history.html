@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/bulma.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+
+  <title>Arman</title>
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">
+        <svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="35" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#333">
+            P.<tspan fill="#007BFF">O.</tspan>Bucket
+          </text>
+        </svg>
+
+
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="custom-nav-item-container navbar-start">
+        <a class="navbar-item">
+          Home
+        </a>
+
+        <a href="#" class="navbar-item">
+          Buyer
+        </a>
+      </div>
+
+      <div class="navbar-end is-flex is-align-items-center mr-3">
+
+        <!-- TODO: add link -->
+        
+        <a class="d-flex" href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-circle"
+            viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            <path fill-rule="evenodd"
+              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+          </svg>
+        </a>
+      
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- History list -->
+
+  <div class="history-container is-flex is-flex-direction-column is-align-items-center" style="overflow-y: scroll; max-height: 80vh;">
+
+    <!-- History child -->
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <!-- --- -->
+
+
+    <!-- Demo copy - delete later -->
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <div class="box" style="width: 800px;">
+      <div class="history-header">
+        <div class="history-product-name is-size-5 has-text-weight-bold">Product xyz</div>
+        <hr class="my-3" style="width: 100%;" />
+      </div>
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
+        <div class="history-product-content is-flex is-flex-direction-row">
+          <!-- product image -->
+          <figure class="image is-128x128">
+            <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <!-- product details -->
+          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
+            <p><b>Price: </b> 9999$</p>
+            <p><b>Seller: </b> Ayush</p>
+            <p><b>Bought on: </b> 23/4/3214</p>
+            <p><b>Type of product: </b> IOT</p>
+          </div>
+        </div>
+        <!-- button container -->
+        <div class="history-buttons-container">
+          <button class="button is-danger custom-delete-btn"><img src="{% static 'images/icons/trash.svg' %}"
+              alt="Trash icon" /></button>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+
+  </div>
+
+
+
+
+
+  <script>
+
+    // Used for hamburger menu
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // Get all "navbar-burger" elements
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+      // Add a click event on each of them
+      $navbarBurgers.forEach(el => {
+        el.addEventListener('click', () => {
+
+          // Get the target from the "data-target" attribute
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+
+        });
+      });
+
+    });
+  </script>
+</body>
+
+</html>

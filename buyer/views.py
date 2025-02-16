@@ -14,6 +14,11 @@ def index(request):
     return render(request, 'index.html', 
                   {'title': 'Home'})
 
+# TODO: Test route change later
+def history(request):
+    return render(request, 'history.html', 
+                  {'title': 'history'})
+
 
 # login route
 def login(request):
