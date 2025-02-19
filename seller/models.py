@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-from buyer.models import Buyer
-
 
 class Seller(models.Model):
     username = models.CharField(max_length=122, unique=True)
@@ -16,18 +14,17 @@ class Seller(models.Model):
 
 
 class Product(models.Model):
-    categories = {
-        0: "--SELECT CATEGORY--",
-        1: "Software",
-        2: "Hardware",
-        3: "Electronics (embedded systems)",
-    }
+    categories = [
+        ('software', "Software"),
+        ('hardware', "Hardware"),
+        ('EEMS', "Electronics (embedded systems)")
+    ]
 
     pid = models.CharField(max_length=122, unique=True, primary_key=True)
     name = models.CharField(max_length=255)
     desc = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.CharField(max_length=5, choices=categories, default=0)
+    category = models.CharField(max_length=10, choices=categories, default='software')
     tags = models.CharField(max_length=255, null=True)
     image = models.ImageField(upload_to=f'products/', blank=True)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='product')
@@ -42,7 +39,7 @@ class Bid(models.Model):
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="bit amount")
     bid_time = models.DateTimeField(default=timezone.now, verbose_name="bit time")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)  # Product of the Bid
-    bidder = models.ForeignKey(Buyer, on_delete=models.CASCADE)  # User placing the bid
+    bidder = models.CharField(max_length=100)  # User placing the bid
 
     class Meta:
         # Ensure only one highest bid exists per product

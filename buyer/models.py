@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from seller.models import Product, Seller
+
 
 class Buyer(models.Model):
     username = models.CharField(max_length=100)
@@ -13,13 +15,13 @@ class Buyer(models.Model):
 
 
 class History(models.Model):
-    product_name = models.CharField(max_length=122, verbose_name="product name")
-    seller_phone_no = models.CharField(max_length=20, null=True, verbose_name="seller phone number")
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    seller = models.ForeignKey(Seller, on_delete=models.SET_NULL, null=True)
     date_of_purchase = models.DateTimeField(default=timezone.now, verbose_name="date of purchase")
     owner = models.ForeignKey(Buyer, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.product_name
+        return self.product.name
 
 
 class RouteError(models.Model):

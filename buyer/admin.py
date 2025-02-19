@@ -9,8 +9,8 @@ class RouteErrorAdmin(admin.ModelAdmin):
     search_fields = ('title', 'field')
 
 class HistoryAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'owner', 'seller_phone_no')
-    search_fields = ('product_name', 'owner', 'date_of_purchase')
+    list_display = ('product', 'owner', 'seller')
+    search_fields = ('product', 'owner', 'date_of_purchase')
 
 class BuyerAdmin(admin.ModelAdmin):
     list_display = ('email', 'username', 'phone')
