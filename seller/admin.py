@@ -18,8 +18,8 @@ class SellerAdmin(admin.ModelAdmin):
     search_fields = ('username', 'email')
 
 class SalesAdmin(admin.ModelAdmin):
-    list_display = ('product', 'date_of_sale', 'sale_price', 'seller')
-    search_fields = ('product', 'date_of_sale', 'seller')
+    list_display = ('product', 'sale_date', 'final_price', 'seller')
+    search_fields = ('product', 'sale_date', 'seller')
 
 class BidAdmin(admin.ModelAdmin):
     list_display = ('product', 'bidder', 'bid_amount', 'bid_time')

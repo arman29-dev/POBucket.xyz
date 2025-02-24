@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-from seller.models import Product, Seller
-
 
 class Buyer(models.Model):
     username = models.CharField(max_length=100)
@@ -15,8 +13,8 @@ class Buyer(models.Model):
 
 
 class History(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    seller = models.ForeignKey(Seller, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey("seller.Product", on_delete=models.SET_NULL, null=True)
+    seller = models.ForeignKey("seller.Seller", on_delete=models.SET_NULL, null=True)
     date_of_purchase = models.DateTimeField(default=timezone.now, verbose_name="date of purchase")
     owner = models.ForeignKey(Buyer, on_delete=models.CASCADE)
 

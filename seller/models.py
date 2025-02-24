@@ -30,33 +30,45 @@ class Product(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='product')
     publish_date = models.DateTimeField(default=timezone.now, verbose_name="publish date")
     bid_status = models.BooleanField(default=False, verbose_name="bit status")  # Flag to mark if auction/bidding is open
+    highest_bid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Highest bid amount
+    highest_bidder = models.ForeignKey("buyer.Buyer", null=True, blank=True, on_delete=models.SET_NULL, related_name="bids_won")
 
     def __str__(self) -> str:
-        return self.pid
+        return self.name
 
 
 class Bid(models.Model):
-    bid_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="bit amount")
-    bid_time = models.DateTimeField(default=timezone.now, verbose_name="bit time")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)  # Product of the Bid
-    bidder = models.CharField(max_length=100)  # User placing the bid
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='bids')  # Product being bid on
+    bidder = models.ForeignKey("buyer.Buyer", on_delete=models.CASCADE, related_name='bids')  # Buyer placing the bid
+    bid_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Bid Amount")
+    bid_time = models.DateTimeField(default=timezone.now, verbose_name="Bid Time")
 
     class Meta:
-        # Ensure only one highest bid exists per product
-        ordering = ["-bid_amount"]
+        ordering = ["-bid_amount"]  # Show highest bids first
 
-    def __str__(self) -> str:
-        return self.product.pid
+    def __str__(self):
+        return f"{self.bidder.username} bid ₹{self.bid_amount} on {self.product.name}"
+
+    # Save and update product's highest bid
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Update highest bid on product
+        highest_bid = self.product.bids.order_by('-bid_amount').first()
+        if highest_bid:
+            self.product.highest_bid = highest_bid.bid_amount
+            self.product.highest_bidder = highest_bid.buyer
+            self.product.save()
 
 
 class Sales(models.Model):
-    sale_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="sale price")
-    date_of_sale = models.DateTimeField(default=timezone.now, verbose_name="date of sale")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sales")  # Product sold
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="sales")  # Seller
+    buyer = models.ForeignKey("buyer.Buyer", on_delete=models.CASCADE, null=True, blank=True, related_name="purchases")  # Buyer
+    final_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Sale price (highest bid or base price)
+    sale_date = models.DateTimeField(default=timezone.now, verbose_name="Sale Date")  # Date of sale
 
-    def __str__(self) -> str:
-        return self.product.pid
+    def __str__(self):
+        return f"{self.product.name} sold by {self.seller.username} to {self.buyer.username} for ₹{self.final_price}"
 
 
 class RouteError(models.Model):
