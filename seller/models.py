@@ -56,7 +56,7 @@ class Bid(models.Model):
         highest_bid = self.product.bids.order_by('-bid_amount').first()
         if highest_bid:
             self.product.highest_bid = highest_bid.bid_amount
-            self.product.highest_bidder = highest_bid.buyer
+            self.product.highest_bidder = highest_bid.bidder
             self.product.save()
 
 

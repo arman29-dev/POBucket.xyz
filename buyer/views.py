@@ -1,20 +1,25 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password as secure_password
+from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, render
+from django.contrib import messages
 
-# from .forms import RegistrationForm
+from seller.models import Product, Bid
 from .models import Buyer, RouteError
-from seller.models import Product
 
-from . import authenticate
+from . import authenticate, login_required
+
 from termcolor import cprint
 from sqlite3 import IntegrityError
+# from .forms import RegistrationForm
+
 
 # index route (default)
 def index(request):
     return render(request, 'index.html', 
                   {'title': 'Home'})
 
-# TODO: Test route change later
+
+@login_required
 def history(request):
     return render(request, 'history.html', 
                   {'title': 'history'})
@@ -38,7 +43,7 @@ def login(request):
                     )
         try:
             if authenticate(buyer, password=request.POST.get('password')):
-                request.session[buyer.email] = True
+                request.session['buyer'] = buyer.email
                 cprint(f"{buyer.email} authenticated successfully!!".upper(), 
                        'green', attrs=['bold', 'blink'])
                 return redirect('buyer-portal', buyer=buyer.email)
@@ -64,6 +69,13 @@ def login(request):
                               'loginErrorMsg': 'Unable to authenticate you!!'.upper()
                             }
                         )
+
+
+# logout route
+def logout(request):
+    if request.session:
+        request.session.flush()
+    return redirect('buyer-login')
 
 
 # register route
@@ -112,6 +124,7 @@ def register(request):
 
 
 # portal route
+@login_required
 def portal(request, buyer):
     if request.method == 'GET':
         products = Product.objects.all()
@@ -123,4 +136,22 @@ def portal(request, buyer):
                        }
                     )
 
-    if request.method == 'POST': pass
+
+# bid route
+@login_required
+def place_bid(request, buyer, pid):
+    product = get_object_or_404(Product, pid=pid)
+    buyer = get_object_or_404(Buyer, email=buyer)
+
+    if request.method == 'POST':
+        bid_amount = request.POST.get('bid-amount')
+        bid_amount = float(bid_amount)
+
+        # Create and save bid
+        bid = Bid.objects.create(product=product, bidder=buyer, bid_amount=bid_amount)
+        bid.save()
+
+        messages.success(request, f"Bid of ₹{bid_amount} placed successfully on {product.name}.")
+        return redirect('buyer-portal', buyer=buyer.email)
+
+    return redirect('buyer-portal', buyer=buyer.username)
