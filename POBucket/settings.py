@@ -32,7 +32,10 @@ SECRET_KEY = 'django-insecure-bdbs_w)p@9ymcndainc)jc)g4!vc73)5)#sp8nm2fv1p8$d$1!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
+NGROK_HOST = dotenv.get_key(f'{BASE_DIR}/.env', 'NGROK_HOST')
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', f'{NGROK_HOST}.ngrok-free.app']
+
+CSRF_TRUSTED_ORIGINS = [f'https://{NGROK_HOST}.ngrok-free.app']
 
 
 # Application definition
