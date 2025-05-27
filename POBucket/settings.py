@@ -14,26 +14,27 @@ import os
 import dotenv
 from pathlib import Path
 
+from . import MYSQL, SQLITE3
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # loading environment variables
-dotenv.load_dotenv(f'{BASE_DIR}/.env')
-
+dotenv.load_dotenv(f'{BASE_DIR}/env/.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bdbs_w)p@9ymcndainc)jc)g4!vc73)5)#sp8nm2fv1p8$d$1!'
+SECRET_KEY = os.environ.get('SERVER_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-NGROK_HOST = dotenv.get_key(f'{BASE_DIR}/.env', 'NGROK_HOST')
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', f'{NGROK_HOST}.ngrok-free.app']
+NGROK_HOST = os.environ.get('NGROK_HOST')
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', f'{NGROK_HOST}.ngrok-free.app', '192.168.1.102']
 
 CSRF_TRUSTED_ORIGINS = [f'https://{NGROK_HOST}.ngrok-free.app']
 
@@ -42,7 +43,7 @@ CSRF_TRUSTED_ORIGINS = [f'https://{NGROK_HOST}.ngrok-free.app']
 
 INSTALLED_APPS = [
     'buyer.apps.BuyerConfig',
-    'seller.apps.SellerConfig', 
+    'seller.apps.SellerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -93,12 +94,7 @@ WSGI_APPLICATION = 'POBucket.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'Database/db.sqlite3',
-    },
-}
+DATABASES = MYSQL
 
 
 # Password validation
