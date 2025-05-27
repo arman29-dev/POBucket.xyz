@@ -5,11 +5,11 @@ from django.utils import timezone
 class Buyer(models.Model):
     username = models.CharField(max_length=100)
     email = models.EmailField(max_length=255, unique=True)
-    phone = models.CharField(max_length=20, null=True)
+    phone = models.CharField(max_length=20, null=True, default=None)
     password = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.email
+        return str(self.email)
 
 
 class History(models.Model):
@@ -29,4 +29,4 @@ class RouteError(models.Model):
     time = models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:
-        return self.title
+        return str(self.title)
