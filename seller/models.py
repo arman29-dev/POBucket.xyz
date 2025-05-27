@@ -10,7 +10,7 @@ class Seller(models.Model):
     password = models.CharField(max_length=122)
 
     def __str__(self) -> str:
-        return self.username
+        return str(self.username)
 
 
 class Product(models.Model):
@@ -34,7 +34,7 @@ class Product(models.Model):
     highest_bidder = models.ForeignKey("buyer.Buyer", null=True, blank=True, on_delete=models.SET_NULL, related_name="bids_won")
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
 
 class Bid(models.Model):
@@ -78,4 +78,4 @@ class RouteError(models.Model):
     time = models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:
-        return self.title
+        return str(self.title)

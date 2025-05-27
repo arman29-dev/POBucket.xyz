@@ -22,7 +22,12 @@ from buyer import views
 urlpatterns = [
     path('login/', views.login, name='buyer-login'),
     path('register/', views.register, name='buyer-registration'),
+    path('logout/<str:buyer>', views.logout, name='buyer-logout'),
+    path('profile/<str:buyer>/', views.profile, name='buyer-profile'),
     path('portal/<str:buyer>', views.portal, name='buyer-portal'),
+    path('history/<str:buyer>/', views.history, name='buyer-history'), # TODO: Test route change later
     path('portal/bidding/<str:buyer>/<str:pid>/', views.place_bid, name='place-bid'),
-    path('history/', views.history, name='buyer-history') # TODO: Test route change later
+    # path('payment/<str:buyer>/<str:pid>', views.payment, name='buyer-payment'),
+    # path('payment/<str:oid>/success', views.payment_success, name='buyer-payment-success'),
+    # path('payment/<str:oid>/cancel', views.payment_cancel, name='buyer-payment-cancel'),
 ]
