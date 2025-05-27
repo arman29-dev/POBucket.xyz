@@ -2,369 +2,486 @@
 
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/portal.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bgStyle.css' %}" />
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
 
-	<title>POB•{{ title }}</title>
-</head>
+        <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/portal.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/bgStyle.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}">
+        <style>
+            main {
+                padding: 35px;
+                display: flex;
+                justify-content: center;
+            }
 
-<style>
-	main {
-		padding: 35px;
-		display: flex;
-		justify-content: center;
-	}
+            .item-card {
+                display: flex;
+                background-color: #1e1e1e;
+                border-radius: 15px;
+                box-shadow: 0 -6px 8px wheat;
+                overflow: hidden;
+                max-width: 600px;
+                width: 100%;
+                transition: all 0.3s ease;
+                padding: 20px;
+            }
 
-	.item-card {
-		display: flex;
-		background-color: #1e1e1e;
-		border-radius: 15px;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-		overflow: hidden;
-		max-width: 600px;
-		width: 100%;
-		transition: all 0.3s ease;
-		padding: 20px;
-	}
+            .item-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 8px #60fcff;
+            }
 
-	.item-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 6px 8px #60fcff;
-	}
+            .item-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                flex: 1;
+                margin-left: 25px;
+            }
 
-	.item-info {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		flex: 1;
-		margin-left: 25px;
-	}
+            .item-content {
+                flex: 1;
+            }
 
-	.item-content {
-		flex: 1;
-	}
+            .item-image {
+                width: 200px;
+                height: 220px;
+                object-fit: cover;
+                border-radius: 10px;
+                align-self: flex-end;
+            }
 
-	.item-image {
-		width: 200px;
-		height: 220px;
-		object-fit: cover;
-		border-radius: 10px;
-		align-self: flex-end;
-	}
+            .item-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin: 0 0 10px 0;
+                color: #f5f5c5;
+            }
 
-	.item-title {
-		font-size: 24px;
-		font-weight: bold;
-		margin: 0 0 10px 0;
-		color: #f5f5c5;
-	}
+            .item-desc {
+                font-size: 14px;
+                color: #b0b0b0;
+                margin-bottom: 10px;
+            }
 
-	.item-desc {
-		font-size: 14px;
-		color: #b0b0b0;
-		margin-bottom: 10px;
-	}
+            .item-price {
+                font-size: 20px;
+                font-weight: bold;
+                color: #4caf50;
+                margin-bottom: 15px;
+            }
 
-	.item-price {
-		font-size: 20px;
-		font-weight: bold;
-		color: #4CAF50;
-		margin-bottom: 15px;
-	}
+            .button-group {
+                display: flex;
+                gap: 16px;
+                margin-top: auto;
+            }
 
-	.button-group {
-		display: flex;
-		gap: 16px;
-		margin-top: auto;
-	}
+            #rupee-span {
+                background-color: #3a3a3a;
+                color: antiquewhite;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
 
-	#rupee-span {
-		background-color: #3a3a3a;
-		color: antiquewhite;
-		border-top-left-radius: 5px;
-		border-bottom-left-radius: 5px;
-	}
+            .profile-toast-wrapper {
+                position: fixed;
+                top: 5%;
+                left: 87%;
+                transform: translateX(-50%);
+                z-index: 1070; /* Higher than modal z-index */
+            }
 
-	/* Responsive styles */
-	@media (max-width: 600px) {
-		.item-card {
-			flex-direction: column;
-			padding: 15px;
-		}
+            .toast-slide-down {
+                animation: slideDown 0.4s ease-out;
+            }
 
-		.item-image {
-			width: 100%;
-			height: 200px;
-			margin-bottom: 15px;
-		}
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
 
-		.item-info {
-			margin-left: 0;
-		}
+            @media (max-width: 600px) {
+                .item-card {
+                    flex-direction: column;
+                    padding: 15px;
+                }
 
-		.button-group {
-			margin-top: 15px;
-		}
-	}
+                .item-image {
+                    width: 100%;
+                    height: 200px;
+                    margin-bottom: 15px;
+                }
 
-	.read-more-link:hover {
-		color: #60fcff;
-	}
+                .item-info {
+                    margin-left: 0;
+                }
 
-	.tags-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-	}
+                .button-group {
+                    margin-top: 15px;
+                }
+            }
 
-	.tag {
-		background-color: #2a2a2a;
-		align-content: center;
-		color: #60fcff;
-		padding: 4px 12px;
-		border-radius: 16px;
-		font-size: 14px;
-		border: 1px solid #3a3a3a;
-		transition: all 0.3s ease;
-	}
+            .read-more-link:hover {
+                color: #60fcff;
+            }
 
-	.tag:hover {
-		background-color: #3a3a3a;
-		border-color: #60fcff;
-	}
-</style>
+            .tags-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
 
-<body class="bg-custom">
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="#">P.O.Bucket</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-					aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item">
-							<a class="nav-link" href="/buyer/history">History</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/buyer/cart">Cart</a>
-						</li>
-					</ul>
-					<a class="d-flex" href="/buyer/profile">
-						<div class="profile-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round">
-								<path d="M18 20a6 6 0 0 0-12 0"></path>
-								<circle cx="12" cy="10" r="4"></circle>
-								<circle cx="12" cy="12" r="10"></circle>
-							</svg>
-						</div>
-					</a>
-				</div>
-			</div>
-		</nav>
-	</header>
+            .tag {
+                background-color: #2a2a2a;
+                align-content: center;
+                color: #60fcff;
+                padding: 4px 12px;
+                border-radius: 16px;
+                font-size: 14px;
+                border: 1px solid #3a3a3a;
+                transition: all 0.3s ease;
+            }
 
-	<main class="container-fluid row g-4 navbar-nav-scroll">
+            .tag:hover {
+                background-color: #3a3a3a;
+                border-color: #60fcff;
+            }
+        </style>
 
-		{% if messages %}
-		{% for message in messages %}
-		<!-- alert msg box -->
-		<div class="custom-alert alert-dismissible fade show" role="alert">
-			<div class="alert-content">
-				<i class="bi bi-info-circle-fill alert-icon"></i>
-				<span class="alert-message">{{ message }}</span>
-			</div>
-			<button type="button" class="alert-close" data-bs-dismiss="alert" aria-label="Close">
-				<i class="bi bi-x"></i>
-			</button>
-		</div>
-		{% endfor %}
-		{% endif %}
+        <title>POB•{{ title }}</title>
+    </head>
 
-		{% if products %}
-		{% for product in products %}
-		<!-- item card -->
-		<section class="col-auto">
-			<div class="item-card">
-				<img src="{{ product.image.url }}" alt="{{ product.image.name }}" class="item-image">
-				<div class="item-info">
-					<div>
-						<h2 class="item-title">{{ product.name }}</h2>
-						<hr style="color: antiquewhite;">
-						<p class="item-desc">{{ product.desc }}</p>
-						<p class="item-price" id="price">₹{{ product.price }}</p>
-					</div>
-					<div class="row">
-						<div class="col-auto mx-auto">
-							<button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
-								data-bs-target="#{{ product.pid }}">More Info <i class="bi bi-info-circle"></i>
-							</button>
-						</div>
-						<a class="btn btn-success col-7 mx-auto">Buy Now <i class="bi bi-bag"></i></a>
-					</div>
-				</div>
-			</div><br>
-		</section>
 
-		<!-- item modal box -->
-		<div class="modal fade" id="{{ product.pid }}" tabindex="-1" aria-labelledby="{{ product.pid }}"
-			aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-				<div class="modal-content">
-					<div class="modal-header bg-dark text-light">
-						<h5 class="item-title" id="{{ product.pid }}">{{ product.name }}</h5>
-					</div>
-					<div class="modal-body bg-dark text-light">
-						<p><strong>Seller Name:</strong> {{ product.seller.fullname }}</p>
-						<p><strong>Seller Phone:</strong> {{ product.seller.phone }}</p>
-						<hr>
-						<p><strong>Base Price:</strong> ₹{{ product.price }}</p>
-						<p><strong>Category:</strong> {{ product.category }}</p>
-						<div class="tags-container">
-							<p><strong>Tags: </strong></p>
-							{% for tag in product.tags.split %}
-							<span class="tag">{{ tag }}</span>
-							{% endfor %}
-						</div><br>
-						<strong>Description:</strong>
-						<p class="modal-item-desc">{{ product.desc }}</p>
-						<hr>
-						<p><strong>Bid Status:</strong> {% if product.bid_status %}Open{% else %}Closed{% endif %}</p>
-						{% if product.bid_status %}
-						<p><strong>Current Bid:</strong> ₹<span class="highest-bid" 
-							data-highest-bid="{{ product.highest_bid|default:product.price }}">
-							{{ product.highest_bid|default:product.price }}
-						</span></p>
-						<form class="input-group" method="post" action="{% url 'place-bid' buyer product.pid %}">
-							{% csrf_token %}
-							<input type="hidden" name="pid" value="{{ product.pid }}">
-							<span class="input-group-text" id="rupee-span">₹</span>
-							<input type="number" class="form-control text-bg-secondary" name="bid-amount" id="bit-input-field"
-								placeholder="Enter your Bid Amount" aria-label="Biding amount" required>
-							<button class="btn btn-outline-info" type="submit">Place Bid</button>
-						</form>
-						{% endif %}
-					</div>
-					<div class="modal-footer bg-dark text-light">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		{% endfor %}
-		{% endif %}
-	</main>
+    <body class="bg-grid">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'site-index' %}"><h4>P.O.Bucket</h4></a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'buyer-history' buyer %}">History</a>
+                            </li>
+                        </ul>
+                        <div class="collapse d-flex navbar-collapse" id="navbarSupportedContent" style="display: flex; justify-content: flex-end;">
+                            <div class="d-flex btn profile-icon" role="button" aria-expanded="true"
+                                data-bs-toggle="modal" data-bs-target="#user-profile-modal">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="32" height="32" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M18 20a6 6 0 0 0-12 0"></path>
+                                    <circle cx="12" cy="10" r="4"></circle>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
 
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
-		</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-		integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
-		</script>
+        <main class="container-fluid row g-4 navbar-nav-scroll" style="max-height: 100%; margin: 2px;">
+            {% if messages %}
+            {% for message in messages %}
+            <!-- alert msg box -->
+            <div class="custom-alert alert-dismissible fade show" role="alert">
+                <div class="alert-content">
+                    <i class="bi bi-info-circle-fill alert-icon"></i>
+                    <span class="alert-message">{{ message }}</span>
+                </div>
+                <button type="button" class="alert-close" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
 
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-			// Function to truncate text to a specified number of words
-			function truncateText(text, limit) {
-				const words = text.split(" ")
-				if (words.length > limit) {
-					return words.slice(0, limit).join(" ") + "..."
-				}
-				return text
-			}
+            {% if products %}
+            {% for product in products %}
+            <!-- item card -->
+            <section class="col-auto">
+                <div class="item-card">
+                    <img src="{{ product.image.url }}" alt="{{ product.image.name }}" class="item-image"/>
+                    <div class="item-info">
+                        <div>
+                            <h2 class="item-title">{{ product.name }}</h2>
+                            <hr style="color: antiquewhite" />
+                            <p class="item-desc">{{ product.desc }}</p>
+                            <p class="item-price" id="price">₹{{ product.price }}</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto mx-auto">
+                                <button type="button" class="btn btn-outline-info"
+                                    data-bs-toggle="modal" data-bs-target="#{{ product.pid }}">
+                                    More Info <i class="bi bi-info-circle"></i>
+                                </button>
+                            </div>
+                            <a class="btn btn-success col-7 mx-auto" id="buy-btn" href="#">
+                                Buy Now <i class="bi bi-bag"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </section>
 
-			// Apply truncation to all item card description paragraphs
-			const itemCardDesc = document.querySelectorAll(".item-desc")
-			itemCardDesc.forEach((description) => {
-				const fullText = description.textContent
-				const truncatedText = truncateText(fullText, 20)
-				description.textContent = truncatedText
-			})
+            <!-- item info modal box -->
+            <div class="modal fade" id="{{ product.pid }}" tabindex="-1"
+                aria-labelledby="{{ product.pid }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header bg-dark text-light">
+                            <h5 class="item-title" id="{{ product.pid }}">
+                                {{ product.name }}
+                            </h5>
+                        </div>
+                        <div class="modal-body bg-dark text-light">
+                            <p>
+                                <strong>Seller Name:</strong> {{ product.seller.fullname }}
+                            </p>
+                            <p>
+                                <strong>Seller Phone:</strong> {{ product.seller.phone }}
+                            </p>
+                            <hr />
+                            <p>
+                                <strong>Base Price:</strong> ₹{{ product.price }}
+                            </p>
+                            <p>
+                                <strong>Category:</strong> {{ product.category }}
+                            </p>
+                            <div class="tags-container">
+                                <p><strong>Tags: </strong></p>
+                                {% for tag in product.tags.split %}
+                                <span class="tag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            <br />
+                            <strong>Description:</strong>
+                            <p class="modal-item-desc">{{ product.desc }}</p>
+                            <hr />
+                            <p>
+                                <strong>Bid Status:</strong> {% if product.bid_status %}Open{% else %}Closed{%endif %}
+                            </p>
+                            {% if product.bid_status %}
+                            <p>
+                                <strong>Current Bid:</strong> ₹<span
+                                    class="highest-bid"
+                                    data-highest-bid="{{ product.highest_bid|default:product.price }}">
+                                    {{ product.highest_bid|default:product.price }}
+                                </span>
+                            </p>
+                            <form class="input-group" method="post" action="{% url 'place-bid' buyer product.pid %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="pid" value="{{ product.pid }}"/>
+                                <span class="input-group-text" id="rupee-span">₹</span>
+                                <input type="number" class="form-control text-bg-secondary" name="bid-amount"
+                                    id="bit-input-field" placeholder="Enter your Bid Amount"
+                                    aria-label="Biding amount" required/>
+                                <button class="btn btn-outline-info" type="submit">
+                                    Place Bid
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="modal-footer bg-dark text-light">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
 
-			// Apply truncation to all modal item description paragraphs
-			const modalItemDesc = document.querySelectorAll(".modal-item-desc")
-			modalItemDesc.forEach((description) => {
-				const fullText = description.textContent
-				const truncatedText = truncateText(fullText, 20)
-				description.textContent = truncatedText
+            <!-- toast message box -->
+            <div class="profile-toast-wrapper">
+                <div id="profile-toast" class="toast bg-danger text-light"
+                role="alert" aria-live="assertive" aria-atomic="true"
+                data-bs-autohide="true" data-bs-delay="5000">
+                    <div class="toast-header bg-danger text-light">
+                        <strong class="me-auto">Profile Updater</strong>
+                        <small>Just Now</small>
+                        <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <div id="error-msg"></div>
+                    </div>
+                </div>
+            </div>
 
-				// Add a "Read More" link if the text was truncated
-				if (fullText !== truncatedText) {
-					const readMoreLink = document.createElement("a")
-					readMoreLink.href = "#"
-					readMoreLink.textContent = " Read More"
-					readMoreLink.classList.add("read-more-link")
-					description.appendChild(readMoreLink)
+            <!-- user profile madal box -->
+            <div class="modal fade" tabindex="-1" id="user-profile-modal"
+                aria-labelledby="user-profile-modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <form method="post" id="userProfileForm"
+                    onsubmit="return validateUpdatedProfileData()" action="{% url 'buyer-profile' buyer %}" style="width: 100%;">
+                        {% csrf_token %}
+                        <div class="modal-content">
+                            <div class="modal-header bg-dark text-light">
+                                <h2 class="item-title">Profile Block</h2>
+                                <div style="display: flex; justify-content: flex-end;">
+                                    <a data-bs-dismiss="modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" role="button" tabindex="0" width="24" height="24" fill="red" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="modal-body bg-dark text-light">
+                                <div class="row g-1">
+                                    <div class="col-4">
+                                        <div class="row g-1 mt-2"><h3>Username</h3></div>
+                                        <div class="row g-1 mt-4"><h3>Email</h3></div>
+                                        <div class="row g-1 mt-4"><h3>Phone No.</h3></div>
+                                        <div class="row g-1 mt-4"><h3>Password</h3></div>
+                                    </div>
 
-					readMoreLink.addEventListener("click", function (e) {
-						e.preventDefault()
-						if (this.textContent === " Read More") {
-							description.textContent = fullText
-							this.textContent = " Read Less"
-							description.appendChild(this)
-						} else {
-							description.textContent = truncatedText
-							this.textContent = " Read More"
-							description.appendChild(this)
-						}
-					})
-				}
-			})
-		
-			// Select all bid forms
-			document.querySelectorAll(".input-group").forEach(form => {
-				form.addEventListener("submit", function(event) {
-					// Get the highest bid value from the modal
-					let highestBid = parseFloat(form.closest(".modal-body").querySelector(".highest-bid").dataset.highestBid);
+                                    <div class="col-8">
+                                        <div class="row g-1 mt-2">
+                                            <div class="col-8" style="width: 220px;">
+                                                <input type="text" class="form-control user-input" id="updatedUsername"
+                                                name="updatedUsername" placeholder="@Username" value="{{ buyer.username }}"
+                                                required readonly>
+                                            </div>
+                                            <div class="col-auto d-flex gap-1">
+                                                <button type="button" class="btn btn-outline-info data-edit-btn" aria-label="edit btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-outline-danger cnl-data-edit-btn" aria-label="cancel btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row g-1 mt-4">
+                                            <div class="col-8" style="width: 220px;">
+                                                <input type="email" class="form-control user-input" id="updatedEmail"
+                                                name="updatedEmail" placeholder="Email" value="{{ buyer.email }}"
+                                                required readonly>
+                                            </div>
+                                            <div class="col-auto d-flex gap-1">
+                                                <button type="button" class="btn btn-outline-info data-edit-btn" aria-label="edit btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-outline-danger cnl-data-edit-btn" aria-label="cancel btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row g-1 mt-4">
+                                            <div class="col-8" style="width: 220px;">
+                                                <input type="tel" class="form-control user-input" id="updatedPhoneNo"
+                                                name="updatedPhoneNo" placeholder="+(code)Phone No."
+                                                {% if buyer.phone %} value="{{ buyer.phone }}" {% endif %}
+                                                required readonly>
+                                            </div>
+                                            <div class="col-auto d-flex gap-1">
+                                                <button type="button" class="btn btn-outline-info data-edit-btn" aria-label="edit btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-outline-danger cnl-data-edit-btn" aria-level="cancel btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row g-1 mt-4" style="display: flex; justify-content: space-betweens;">
+                                            <div class="col-auto">
+                                                <!-- TODO: add change password link -->
+                                                <a class="btn btn-outline-warning" href="#" style="width: 200px;">CHANGE PASSWORD</a>
+                                            </div>
+                                            <div class="col-auto">
+                                                <!-- TODO: add forgot password link -->
+                                                <a class="btn btn-outline-danger" href="#" style="width: 100px;">FORGOT</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-between bg-dark text-light">
+                                <div>
+                                    <button type="submit" id="submitBtn" class="btn btn-success" disabled>SAVE CHANGES</button>
+                                </div>
+                                <div>
+                                    <a class="btn btn-danger" href="{% url 'buyer-logout' buyer.email %}">LOGOUT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
 
-					// Get the user-entered bid amount
-					let userBid = parseFloat(form.querySelector("#bit-input-field").value);
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous">
+        </script>
 
-					if (isNaN(userBid) || userBid <= highestBid) {
-						alert("Your bid must be higher than the current highest bid (₹" + highestBid + ")");
-						event.preventDefault(); // Prevent form submission
-					}
-				});
-			});
-		
-			// Auto-dismiss alerts after 5 seconds
-			const alerts = document.querySelectorAll(".custom-alert")
-			alerts.forEach((alert) => {
-				setTimeout(() => {
-				alert.classList.add("fade-out")
-				setTimeout(() => {
-					alert.remove()
-				}, 500)
-				}, 5000)
-			})
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous">
+        </script>
 
-			// Add click event for manual dismissal
-			document.querySelectorAll(".alert-close").forEach((button) => {
-				button.addEventListener("click", function () {
-				const alert = this.closest(".custom-alert")
-				alert.classList.add("fade-out")
-				setTimeout(() => {
-					alert.remove()
-				}, 500)
-				})
-			})
-		})
-	</script>
-</body>
+        <script src="{% static 'js/portal.js' %}"></script>
 
+    </body>
 </html>

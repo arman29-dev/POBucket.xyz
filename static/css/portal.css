@@ -12,22 +12,9 @@
   background: #212529;
 }
 
-.profile-icon {
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
-}
-
-.profile-icon:hover {
-  transform: scale(1.1);
-}
-
 .profile-icon svg {
-  color: #5483b3;
-  transition: color 0.3s ease-in-out;
-}
-
-.profile-icon:hover svg {
   color: #60fcff;
+  filter: drop-shadow(0 0 0.75rem light-cyan);
 }
 
 .product-grid {
