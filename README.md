@@ -1,64 +1,42 @@
-# P.O.Bucket
+# 🎓 P.O.Bucket.io — Academic Auction Platform
 
-**P.O.Bucket** is a peer-to-peer e-commerce platform that enables direct buying and selling of products such as software, hardware, and embedded systems. The platform fosters transparency by allowing direct communication between buyers and sellers, eliminating third-party involvement in transactions.
-
----
-
-## 🚀 Project Overview
-
-P.O.Bucket is designed to be a minimal-friction marketplace for tech-oriented products. Sellers can list their offerings, and buyers can browse, bid, and purchase directly. Every transaction is between the buyer and the seller — P.O.Bucket serves as a platform to facilitate discovery, connection, and negotiation.
+> Empowering students to auction and monetize their academic creations.
 
 ---
 
-## 🧩 Key Features
+## 📘 Project Overview
 
-### 🛍️ Product Listings
-- Sellers can list products under three main categories:
-  - **Software**
-  - **Hardware**
-  - **Embedded Systems**
-- Product descriptions include:
-  - Detailed specs
-  - Images
-  - Pricing
-  - Seller's contact information
+**P.O.Bucket.io** is a Django-powered online marketplace where school and college students can **auction or sell academic projects** (e.g., robotics kits, software prototypes) to potential buyers. This platform supports registration, secure authentication, product listings, bidding, and full auction lifecycle management.
 
-### 🤝 Direct Buyer-Seller Interaction
-- No intermediaries or platform fees.
-- Buyers directly contact sellers via provided contact details.
-- Negotiation and meet-ups can be arranged outside the platform.
-
-### 💸 Simple Purchase Flow
-1. Buyer logs in with their account.
-2. Browses and selects a product of interest.
-3. Clicks **Buy** to initiate a payment or contacts the seller directly.
-
-### 🧾 Bidding System
-- Sellers can enable **bidding** on products.
-- Buyers can place bids.
-- Sellers can review and accept any bid they find suitable.
-
-### 💰 Payment Methods
-- **Online via UPI**
-- **Offline cash transactions**, enabled through direct meet-ups.
+> Developed with robust MVC principles, this project showcases a modular and scalable approach to marketplace applications.
 
 ---
 
-## 🧑‍💼 User Roles
+## 🧱 Tech Stack
 
-### Seller
-- Register and log in to the platform.
-- List products with full details.
-- Enable or disable the bidding feature per product.
-- Accept or reject bids.
-- Manage product visibility and availability.
+| Layer            | Technology                             |
+|------------------|----------------------------------------|
+| Backend          | Django 5.1.2 (Python)                  |
+| Frontend         | HTML, CSS, Bulma                       |
+| Database         | SQLite3/MySQL                          |
+| Environment Vars | Python `dotenv`                        |
+| Auth & Security  | Django Hashers, Session Middleware     |
+| Payment Logic    | Razorpay integration                   |
+| Dev Tools        | Termcolor, Sqlparse, Werkzeug          |
 
-### Buyer
-- Register and log in to the platform.
-- Browse listings by category or interest.
-- Place bids if enabled by seller.
-- Initiate purchases using UPI or arrange offline meet-ups.
-- Contact seller using the contact info in the product description.
+---
+
+## 🛠️ Features
+
+- 🧑‍🎓 Student/Buyer Portal  
+- 🧑‍💼 Seller Dashboard  
+- 📦 Product Listings & Auction Controls  
+- 📊 Bid Management System  
+- 🧾 Purchase History Tracking  
+- 🛡️ Admin Panel with Moderation  
+- 📝 Error Logging via `RouteError`  
+- 📄 Modular Django Apps (`buyer`, `seller`)  
+- 💳 Payment Processing with Razorpay
 
 ---
 
@@ -81,17 +59,6 @@ P.O.Bucket is designed to be a minimal-friction marketplace for tech-oriented pr
 | seller           | ForeignKey    | to seller.Seller, on_delete=models.SET_NULL, null=True      |
 | date_of_purchase | DateTimeField | default=timezone.now, verbose_name="date of purchase"       |
 | owner            | ForeignKey    | to buyer.Buyer, on_delete=models.CASCADE                    |
-
-### `routeerror`
-
-| Field Name | Field Type    | Arguments                          |
-|------------|---------------|------------------------------------|
-| title      | CharField     | max_length=122                     |
-| message    | TextField     |                                    |
-| field      | CharField     | max_length=122                     |
-| time       | DateTimeField | default=timezone.now               |
-
----
 
 ### `seller`
 
@@ -134,40 +101,108 @@ P.O.Bucket is designed to be a minimal-friction marketplace for tech-oriented pr
 | buyer            | ForeignKey    | to `buyer.Buyer`, on_delete=models.SET_NULL, null=True    |
 | seller           | ForeignKey    | to `seller.Seller`, on_delete=models.SET_NULL, null=True  |
 | amount           | DecimalField  | max_digits=10, decimal_places=2                           |
-| payment_method   | CharField     | max_length=20 (e.g., 'upi', 'cash')                       |
+| payment_method   | CharField     | max_length=20 (e.g., 'upi', 'cash', 'razorpay')           |
 | status           | CharField     | max_length=20 (e.g., 'initiated', 'completed')            |
 | transaction_time | DateTimeField | default=timezone.now                                      |
 
 ---
 
-## 📈 Future Enhancements
-- In-app messaging system.
-- Seller and buyer review/rating system.
-- Notifications for bidding and updates.
-- Product inventory tracking.
-- Optional escrow system.
+## 🗃️ Project Structure
+
+```
+POBucket/
+├── buyer/              # Buyer app: models, views, URLs
+├── seller/             # Seller app: products, auctions
+├── static/css/         # Custom styling and themes
+├── templates/          # HTML templates
+├── POBucket/           # Main project configuration
+├── manage.py           # Django launcher
+├── requirements.txt    # Python dependencies
+├── LICENSE             # GNU GPLv3
+└── README.md           # You are here
+```
 
 ---
 
-## 🧪 Tech Stack
+## 🔧 Installation & Running Locally
 
-- **Backend**: Django (Python)
-- **Frontend**: HTML, CSS, JS
-- **Database**: MySQL
-- **Payment Gateway**: UPI (QR or payment link)
-- **Hosting**: VPS / AWS / Heroku
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/bunny-k28/POBucket.git
+   cd POBucket
+   ```
+
+2. **Set Up Virtual Environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # or `venv\\Scripts\\activate` on Windows
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure Environment Variables**
+   Create a `.env` file in the root directory:
+   ```env
+   SECRET_KEY=your-secret-key
+   DEBUG=True
+   RAZORPAY_KEY_ID=your-razorpay-key
+   RAZORPAY_KEY_SECRET=your-razorpay-secret
+   ```
+
+5. **Run Migrations**
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+6. **Start the Development Server**
+   ```bash
+   python manage.py runserver
+   ```
+
+7. **Access in Browser**
+   ```
+   http://127.0.0.1:8000
+   ```
+
+---
+
+## 🚀 Future Enhancements
+
+- Add **Email/OTP authentication**  
+- Deploy via **Docker + Vercel or Railway**  
+- Real-time bidding with Django Channels  
+- Ratings & reviews for sellers  
+- In-app messaging system
+- Product inventory tracking
+- Optional escrow system
+
+---
+
+## 👨‍💻 Author
+
+**Arman Das**  
+_This project was developed to explore and demonstrate scalable, multi-role Django applications._
+
+---
+
+## 📫 Contact
+
+Need help or have suggestions?
+
+- 📧 Email: [pob.help@gmail.com](mailto:pob.help@gmail.com)  
+- 💬 WhatsApp: [Chat on WhatsApp](https://api.whatsapp.com/send?phone=8745951248&text=POB%20NeedHelp)
+- GitHub: [github.com/bunny-k28](https://github.com/bunny-k28)
 
 ---
 
 ## 📜 License
 
-This project is open-source and licensed under the [MIT License](LICENSE).
+This project is open-source and licensed under the [GNU GPLv3 License](LICENSE).
 
 ---
 
-## 📞 Contact
-
-For queries, issues, or collaborations:
-- Email: [armandevilk282004@gmail.com]
-- GitHub: [github.com/bunny-k28]
-<!-- - Project Website: [https://yourdomain.com] -->
+> _"Build systems that build futures."_
