@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+    <h2>Complete Your Payment</h2>
+    <button id="pay-button">Pay Now</button>
+
+    <script>
+
+        const buyer = "{{ buyer }}";
+        const pid = "{{ pid }}";
+        const famnt = "{{ amount }}";
+
+        document.getElementById("pay-button").addEventListener("click", function () {
+            fetch(`/buyer/payment/${buyer}/${pid}`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ amount: parseInt(famnt) })
+            })
+                .then(response => response.json())
+                .then(order => {
+                    var options = {
+                        "key": "{{ razorpay_key }}",
+                        "amount": order.amount,
+                        "currency": order.currency,
+                        "order_id": order.id,
+                        "name": "POBucket.io",
+                        "description": "Purchase Item",
+                        "handler": function (response) {
+                            alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                            window.location.href = `/buyer/payment/${order.id}/success`;
+                        },
+                        "theme": {
+                            "color": "#3faae5"
+                        }
+                    };
+                    var rzp = new Razorpay(options);
+                    rzp.open();
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+
+</html>

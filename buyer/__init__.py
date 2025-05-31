@@ -1,15 +1,18 @@
 from functools import wraps
-from django.db.models import Model
+from django.conf import settings
 from django.shortcuts import redirect
-from django.contrib.auth.hashers import check_password
 
+import razorpay
+import dotenv
+import os
 
-# function to authenticate user
-def authenticate(model=Model, **credentials) -> bool:
-    if check_password(credentials.get('password'), model.password):
-        return True
-    else: return False
+dotenv.load_dotenv(f'{settings.BASE_DIR}/env/.env')
 
+# Razorpay setup
+RZP_TEST_ID = os.environ.get('RZP_TEST_ID')
+RZP_TEST_SECRET = os.environ.get('RZP_TEST_SECRET')
+razorpay_client = razorpay.Client(auth=(RZP_TEST_ID, RZP_TEST_SECRET))
+razorpay_client.set_app_details({"title": "POBucket", "version": "1.0"})
 
 
 def login_required(view_func):
@@ -18,7 +21,7 @@ def login_required(view_func):
         buyer_email = kwargs.get('buyer')
 
         is_authenticated = False
-        if buyer_email and request.session.get('buyer') == buyer_email:
+        if buyer_email and request.session.get(buyer_email) == True:
             is_authenticated = True
 
         if not is_authenticated:

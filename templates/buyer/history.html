@@ -1,134 +1,224 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'css/bulma.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
 
-  <title>P.O.Bucket</title>
-</head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/portal.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bgStyle.css' %}" />
 
-<body>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="#">
-        <svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
-          <text x="10" y="35" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#333">
-            P.<tspan fill="#007BFF">O.</tspan>Bucket
-          </text>
-        </svg>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-
-      </a>
-
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="custom-nav-item-container navbar-start">
-        <a class="navbar-item">
-          Home
-        </a>
-
-        <a href="#" class="navbar-item">
-          Buyer
-        </a>
-      </div>
-
-      <div class="navbar-end is-flex is-align-items-center mr-3">
-
-        <!-- TODO: add link -->
-        
-        <a class="d-flex" href="#">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-circle"
-            viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-            <path fill-rule="evenodd"
-              d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-          </svg>
-        </a>
-      
-
-      </div>
-    </div>
-  </nav>
-
-  <!-- History list -->
-  <div class="history-container is-flex is-flex-direction-column is-align-items-center" style="overflow-y: scroll; max-height: 80vh;">
-    {% if products %} 
-    {% for product in products %}
-    <!-- History child -->
-    <div class="box" style="width: 800px;">
-      <div class="history-header">
-        <div class="history-product-name is-size-5 has-text-weight-bold">{{ product.name }}</div>
-        <hr class="my-3" style="width: 100%;" />
-      </div>
-      <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-items-center">
-        <div class="history-product-content is-flex is-flex-direction-row">
-          <!-- product image -->
-          <figure class="image is-128x128">
-            <img src="{{ item.product_image_url }}" />
-          </figure>
-
-          <!-- product details -->
-          <div class="product-detail-container ml-3 is-flex is-flex-direction-column is-justify-content-center">
-            <p><b>Price: </b> {{ product.price }}</p>
-            <p><b>Published on: </b> {{ product.published_on }}</p>
-            <p><b>Seller Name: </b> {{ product.seller.fullname }}</p>
-            <p><b>Seller Contact: </b> {{ product.seller.phone }}</p>
-          </div>
-        </div>
-        <!-- button container -->
-        <div class="history-buttons-container">
-          <button class="button is-danger custom-delete-btn"><svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg></button>
-        </div>
-      </div>
-    </div>
-    {% endfor %} 
-    {% endif %}
-  </div>
+        <title>POB•{{ title }}</title>
+    </head>
 
 
+    <style>
+        main {
+            padding: 35px;
+            display: flex;
+            justify-content: center;
+        }
 
-  <script>
+        .dropdown-item:hover {
+            color: aqua;
+            background-color: black;
+            opacity: 50;
+        }
 
-    // Used for hamburger menu
-    document.addEventListener('DOMContentLoaded', () => {
+        .dropdown-item:not(:hover) {
+            color: white;
+            opacity: 50;
+        }
 
-      // Get all "navbar-burger" elements
-      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        .item-card {
+            display: flex;
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 600px;
+            width: 100%;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
 
-      // Add a click event on each of them
-      $navbarBurgers.forEach(el => {
-        el.addEventListener('click', () => {
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px #60fcff;
+        }
 
-          // Get the target from the "data-target" attribute
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+            margin-left: 25px;
+        }
 
-          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
+        .item-content {
+            flex: 1;
+        }
 
-        });
-      });
+        .item-image {
+            width: 200px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+            align-self: flex-end;
+        }
 
-    });
-  </script>
-</body>
+        .item-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            color: #f5f5c5;
+        }
 
+        .item-desc {
+            font-size: 14px;
+            color: #b0b0b0;
+            margin-bottom: 10px;
+        }
+
+        .item-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4caf50;
+            margin-bottom: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        #rupee-span {
+            background-color: #3a3a3a;
+            color: antiquewhite;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .item-card {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 200px;
+                margin-bottom: 15px;
+            }
+
+            .item-info {
+                margin-left: 0;
+            }
+
+            .button-group {
+                margin-top: 15px;
+            }
+        }
+
+        .read-more-link:hover {
+            color: #60fcff;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background-color: #2a2a2a;
+            align-content: center;
+            color: #60fcff;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            border: 1px solid #3a3a3a;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background-color: #3a3a3a;
+            border-color: #60fcff;
+        }
+    </style>
+
+    <body class="bg-grid">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'site-index' %}"><h4>P.O.Bucket</h4></a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'buyer-history' buyer %}">History</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex; justify-content: flex-end;">
+                        <h3>
+                        <div class="d-flex btn position-relative profile-icon" role="button" aria-expanded="true"
+                            data-bs-toggle="modal" data-bs-target="#user-profile-modal"
+                            style="display: flex; justify-content: flex-end; align-items: center;
+                            height: 100%; transform: scale(1.5); transform-origin: right center;">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" style="display: block;">
+                                <path d="M18 20a6 6 0 0 0-12 0"></path>
+                                <circle cx="12" cy="10" r="4"></circle>
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container-fluid row g-4 navbar-nav-scroll">
+        </main>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
 </html>
