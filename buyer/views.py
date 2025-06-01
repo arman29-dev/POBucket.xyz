@@ -132,7 +132,7 @@ def portal(request, buyer):
         buyer = get_object_or_404(Buyer, email=buyer)
         return render(request, "portal.html",
             {
-                "title": "Buyer dxd",
+                "title": "Buyer Portal",
                 "products": products,
                 "buyer": buyer,
             },
@@ -143,12 +143,39 @@ def portal(request, buyer):
 # profile route
 @login_required
 def profile(request, buyer):
-    updatedUsername = request.POST.get("updatedUsername")
-    updatedEmail = request.POST.get("updatedEmail")
-    updatedPhoneNo = request.POST.get("updatedPhoneNo")
+    user = Buyer.objects.get(email=buyer)
+    user_data = request.POST.dict()
 
     try:
+        if "updatedUsername" in user_data:
+            usernames = list(Buyer.objects.values_list("username", flat=True))
+            if user_data["updatedUsername"] in usernames:
+                messages.error(request, "Username already exist")
+                return redirect("buyer-portal", buyer=buyer)
 
+            else: user.username = user_data["updatedUsername"]
+
+        if "updatedEmail" in user_data:
+            user.email = user_data["updatedEmail"]; user.save()
+            messages.info(request, "Email updated successfully. Re-Login required")
+            return redirect('buyer-logout', buyer=buyer)
+
+        if "updatedPhoneNo" in user_data: user.phone = user_data["updatedPhoneNo"]
+
+    except Exception as E:
+        profileError = RouteError(
+            title="Profile update issue",
+            field="Profile Route",
+            message=E,
+        ); profileError.save()
+
+        messages.error(request, f"Unable to update data. Reason: {E}")
+        return redirect('buyer-portal', buyer=buyer)
+
+    finally: user.save()
+
+    messages.success(request, "Data updated successfully!")
+    return redirect("buyer-portal", buyer=buyer)
 
 
 # history route

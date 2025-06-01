@@ -1,3 +1,28 @@
+document.addEventListener("DOMContentLoaded", () => {
+  // Auto-dismiss alerts after 5 seconds
+  const alerts = document.querySelectorAll(".custom-alert");
+  alerts.forEach((alert) => {
+      setTimeout(() => {
+          alert.classList.add("fade-out");
+          setTimeout(() => {
+              alert.remove();
+          }, 500);
+      }, 5000);
+  });
+
+  // Add click event for manual dismissal
+  document.querySelectorAll(".alert-close").forEach((button) => {
+      button.addEventListener("click", function () {
+          const alert = this.closest(".custom-alert");
+          alert.classList.add("fade-out");
+          setTimeout(() => {
+              alert.remove();
+          }, 500);
+      });
+  });
+})
+
+
 // var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 var usernameRegex = /^@[a-z0-9_-]{3,15}$/;
 var passwordRegex =

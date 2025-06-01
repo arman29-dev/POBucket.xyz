@@ -18,6 +18,7 @@
         />
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/bgStyle.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/loginAndRegister.css' %}" />
 
         <title>POB•{{ title }}</title>
@@ -47,6 +48,21 @@
                 </div>
             </nav>
         </header>
+
+        {% if messages %}
+        {% for message in messages %}
+        <!-- alert msg box -->
+        <div class="custom-alert alert-dismissible fade show" role="alert" style="width: auto;">
+            <div class="alert-content {{ message.level }}">
+                <i class="bi bi-info-circle-fill alert-icon"></i>
+                <span class="alert-message">{{ message }}</span>
+            </div>
+            <button type="button" class="alert-close" data-bs-dismiss="alert" aria-label="Close">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
 
         <section style="padding-top: 300px">
             <div class="wrapper">

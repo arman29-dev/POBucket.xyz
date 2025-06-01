@@ -219,8 +219,8 @@
             {% if messages %}
             {% for message in messages %}
             <!-- alert msg box -->
-            <div class="custom-alert alert-dismissible fade show" role="alert">
-                <div class="alert-content">
+            <div class="custom-alert alert-dismissible fade show" role="alert" style="width: auto;">
+                <div class="alert-content {{ message.level }}">
                     <i class="bi bi-info-circle-fill alert-icon"></i>
                     <span class="alert-message">{{ message }}</span>
                 </div>
@@ -379,7 +379,7 @@
                                             <div class="col-8" style="width: 220px;">
                                                 <input type="text" class="form-control user-input" id="updatedUsername"
                                                 name="updatedUsername" placeholder="@Username" value="{{ buyer.username }}"
-                                                required readonly>
+                                                required readonly disabled>
                                             </div>
                                             <div class="col-auto d-flex gap-1">
                                                 <button type="button" class="btn btn-outline-info data-edit-btn" aria-label="edit btn">
@@ -401,7 +401,7 @@
                                             <div class="col-8" style="width: 220px;">
                                                 <input type="email" class="form-control user-input" id="updatedEmail"
                                                 name="updatedEmail" placeholder="Email" value="{{ buyer.email }}"
-                                                required readonly>
+                                                required readonly disabled>
                                             </div>
                                             <div class="col-auto d-flex gap-1">
                                                 <button type="button" class="btn btn-outline-info data-edit-btn" aria-label="edit btn">
@@ -424,7 +424,7 @@
                                                 <input type="tel" class="form-control user-input" id="updatedPhoneNo"
                                                 name="updatedPhoneNo" placeholder="+(code)Phone No."
                                                 {% if buyer.phone %} value="{{ buyer.phone }}" {% endif %}
-                                                required readonly>
+                                                required readonly disabled>
                                             </div>
                                             <div class="col-auto d-flex gap-1">
                                                 <button type="button" class="btn btn-outline-info data-edit-btn" aria-label="edit btn">

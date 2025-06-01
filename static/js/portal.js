@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.addEventListener('shown.bs.modal', () => {
       inputs.forEach(input => {
         input.setAttribute('readonly', true); // always reset to readonly
+        input.setAttribute('disabled', true); // always reset to disabled
         originalValues.set(input, input.value); // store original values
       });
       submitBtn.disabled = true;
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const row = button.closest('.row');
         const input = row.querySelector('.user-input');
         input.removeAttribute('readonly');
+        input.removeAttribute('disabled');
         input.focus();
       });
     });
@@ -34,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const original = originalValues.get(input);
         input.value = original || '';
         input.setAttribute('readonly', true);
+        input.setAttribute('disabled', true);
         checkIfChanged(); // update submit button state
       });
     });
