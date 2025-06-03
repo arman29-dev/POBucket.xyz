@@ -25,6 +25,7 @@ urlpatterns = [
     path('logout/<str:buyer>', views.logout, name='buyer-logout'),
     path('profile/<str:buyer>/', views.profile, name='buyer-profile'),
     path('portal/<str:buyer>', views.portal, name='buyer-portal'),
+    path('password/reset/<str:buyer>', views.password_reset, name='buyer-password-reset'),
     path('history/<str:buyer>/', views.history, name='buyer-history'), # TODO: Test route change later
     path('portal/bidding/<str:buyer>/<str:pid>/', views.place_bid, name='place-bid'),
     # path('payment/<str:buyer>/<str:pid>', views.payment, name='buyer-payment'),

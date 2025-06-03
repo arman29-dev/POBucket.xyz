@@ -34,7 +34,7 @@
                 display: flex;
                 background-color: #1e1e1e;
                 border-radius: 15px;
-                box-shadow: 0 -6px 8px wheat;
+                box-shadow: 0 -6px 8px white;
                 overflow: hidden;
                 max-width: 600px;
                 width: 100%;
@@ -443,13 +443,9 @@
                                             </div>
                                         </div>
                                         <div class="row g-1 mt-4" style="display: flex; justify-content: space-betweens;">
-                                            <div class="col-auto">
+                                            <div class="col-12">
                                                 <!-- TODO: add change password link -->
-                                                <a class="btn btn-outline-warning" href="#" style="width: 200px;">CHANGE PASSWORD</a>
-                                            </div>
-                                            <div class="col-auto">
-                                                <!-- TODO: add forgot password link -->
-                                                <a class="btn btn-outline-danger" href="#" style="width: 100px;">FORGOT</a>
+                                                <a class="btn btn-outline-warning" href="{% url 'buyer-password-reset' buyer %}" style="width: 100%;">CHANGE PASSWORD</a>
                                             </div>
                                         </div>
                                     </div>
@@ -482,6 +478,7 @@
         </script>
 
         <script src="{% static 'js/portal.js' %}"></script>
+        <script src="{% static 'js/alert.js' %}"></script>
 
     </body>
 </html>

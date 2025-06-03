@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-# from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 # from django.http import JsonResponse
 from django.contrib import messages
 
 from seller.models import Product, Bid
 from .models import Buyer, RouteError
 
-from . import login_required
+from . import login_required, send_prc_email, hide_email
 # from . import razorpay_client
 
 from termcolor import cprint
@@ -139,7 +139,6 @@ def portal(request, buyer):
         )
 
 
-# TODO
 # profile route
 @login_required
 def profile(request, buyer):
@@ -178,6 +177,60 @@ def profile(request, buyer):
     return redirect("buyer-portal", buyer=buyer)
 
 
+# password reset route
+@login_required
+@csrf_protect
+def password_reset(request, buyer):
+    user = get_object_or_404(Buyer, email=buyer)
+    hidden_email = hide_email(user.email)
+
+    if request.method == "GET":
+        code = user.generate_2FA_code()
+        try:
+            send_prc_email(user, code)
+            messages.success(request, f"Email with 2FA code sent to {hidden_email} for resetting the password!")
+
+        except Exception as E:
+            error = RouteError(
+                title="Issue mailing 2FA code",
+                field="Password Reset Route",
+                message=E,
+            ); error.save()
+
+            messages.error(request, "Unable to email 2FA code")
+            return redirect('buyer-portal', buyer=user)
+
+        return render(request, 'passwordReset.html', {"buyer": user})
+
+    if request.method == "POST":
+        submitted_code = request.POST.get("2FA-code")
+        is_valid, msg = user.validate_code(submitted_code)
+
+        if is_valid:
+            newPassword = request.POST.get("newPassword")
+            newPassword = generate_password_hash(newPassword)
+
+            try:
+                user.password = newPassword; user.save()
+                messages.success(request, msg + " new password updated successfully. Re-Login is required")
+                return redirect('buyer-logout', buyer=user)
+
+            except Exception as E:
+                error = RouteError(
+                    title="issue in password update",
+                    field="Password Reset Route",
+                    message=E,
+                ); error.save()
+
+                messages.success(request, "Unable to update password")
+                return redirect('buyer-password-reset', buyer=user)
+
+        else:
+            messages.error(request, msg)
+            return render(request, 'passwordReset.html', {"buyer": user})
+
+
+# TODO
 # history route
 @login_required
 def history(request, buyer):
