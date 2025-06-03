@@ -14,7 +14,7 @@ import os
 import dotenv
 from pathlib import Path
 
-from . import MYSQL, SQLITE3
+from . import MYSQL
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,7 +76,8 @@ ROOT_URLCONF = 'POBucket.urls'
 
 
 # settion settings
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 86400 # (session expires in 24 hrs)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 
 TEMPLATES = [
