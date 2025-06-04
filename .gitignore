@@ -158,6 +158,12 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Project specific files
+templates/buyer/payment.html
+static/css/payment-btn.css
+static/css/payment.css
+static/js/payment.js
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
