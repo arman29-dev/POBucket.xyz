@@ -6,31 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'css/paymentSuccess.css' %}">
+    <link rel="stylesheet" href="{% static 'css/paymentFailed.css' %}">
 
-    <title>POB•Payment Success</title>
+    <title>Payment Failed - POBucket</title>
 </head>
 <body>
-    <!-- Confetti Elements -->
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-    <div class="confetti"></div>
-
-    <div class="thank-you-container">
-        <div class="success-illustration">
+    <div class="failed-container">
+        <div class="error-illustration">
             <svg xmlns="http://www.w3.org/2000/svg" width="652" height="570.12526" viewBox="0 0 652 570.12526" xmlns:xlink="http://www.w3.org/1999/xlink" role="img">
-                <path d="M383.95544,670.80537c-21.41987,11.54992-30.61494,36.063-30.61494,36.063s25.53333,5.787,46.95319-5.763,30.61493-36.063,30.61493-36.063S405.3753,659.25547,383.95544,670.80537Z" transform="translate(-274 -164.93737)" fill="#6bd4c7"/>
-                <path d="M391.00243,678.74409c-12.54547,20.85238-37.4643,28.88326-37.4643,28.88326s-4.57855-25.77746,7.96693-46.62985,37.46424-28.88328,37.46424-28.88328S403.54791,657.8917,391.00243,678.74409Z" transform="translate(-274 -164.93737)" fill="#6bd4c7"/>
+                <path d="M383.95544,670.80537c-21.41987,11.54992-30.61494,36.063-30.61494,36.063s25.53333,5.787,46.95319-5.763,30.61493-36.063,30.61493-36.063S405.3753,659.25547,383.95544,670.80537Z" transform="translate(-274 -164.93737)" fill="#6a6a6a"/>
+                <path d="M391.00243,678.74409c-12.54547,20.85238-37.4643,28.88326-37.4643,28.88326s-4.57855-25.77746,7.96693-46.62985,37.46424-28.88328,37.46424-28.88328S403.54791,657.8917,391.00243,678.74409Z" transform="translate(-274 -164.93737)" fill="#6a6a6a"/>
                 <rect x="437.44488" y="40.12526" width="76" height="45" fill="#4a4a4a"/>
                 <path d="M636.15176,212.3186h-39.1842V198.65473a19.5921,19.5921,0,0,1,39.1842,0Zm-38.31666-.86755h37.44912V198.65473a18.72456,18.72456,0,0,0-37.44912,0Z" transform="translate(-274 -164.93737)" fill="#6a6a6a"/>
                 <polygon points="381.527 45.502 381.527 40.162 281.877 42.832 278.723 178.092 293.471 196.31 381.527 45.502" fill="#6a6a6a"/>
-                <polygon points="399.167 43.622 291.158 46.08 293.471 196.31 397.705 185.075 399.167 43.622" fill="#6bd4c7"/>
+                <polygon points="399.167 43.622 291.158 46.08 293.471 196.31 397.705 185.075 399.167 43.622" fill="#ff5757"/>
                 <polygon points="490.997 530.355 478.737 530.355 472.905 483.067 490.999 483.067 490.997 530.355" fill="#ffb6b6"/>
                 <path d="M768.12328,707.17645l-39.53076-.00147v-.5A15.3873,15.3873,0,0,1,743.979,691.28875h.001l24.144.001Z" transform="translate(-274 -164.93737)" fill="#4a4a4a"/>
                 <polygon points="445.997 530.355 433.737 530.355 427.905 483.067 445.999 483.067 445.997 530.355" fill="#ffb6b6"/>
@@ -43,7 +32,7 @@
                 <path d="M800.98244,284.42515l-15.97515,18.34766a4.81688,4.81688,0,0,1-7.29384-.0328l-15.76058-18.43546a13.37737,13.37737,0,0,1,17.62782-20.12637l20.3657,13.027a4.81688,4.81688,0,0,1,1.03605,7.21995Z" transform="translate(-274 -164.93737)" fill="#e4e4e4"/>
                 <path d="M881.9179,375.2531H852.237v-10.35a14.84048,14.84048,0,0,1,29.681,0Zm-29.02381-.65714h28.36666V364.9031a14.18333,14.18333,0,0,0-28.36666,0Z" transform="translate(-274 -164.93737)" fill="#6a6a6a"/>
                 <polygon points="622.594 208.892 622.594 204.847 547.112 206.87 544.723 309.325 555.894 323.125 622.594 208.892" fill="#6a6a6a"/>
-                <polygon points="635.956 207.468 554.142 209.33 555.894 323.125 634.849 314.615 635.956 207.468" fill="#6bd4c7"/>
+                <polygon points="635.956 207.468 554.142 209.33 555.894 323.125 634.849 314.615 635.956 207.468" fill="#ff5757"/>
                 <circle cx="472.44488" cy="52.12526" r="32" fill="#ffb6b6"/>
                 <path d="M731.71177,202.80076c11.07,10.84841,30.33409,11.88815,42.50746,2.29425a71.78407,71.78407,0,0,1-15.288,67.676c6.77173,2.44676,14.56709.83705,20.61973-3.06277s10.53515-9.85419,13.91774-16.21037c8.37356-15.73462,10.4701-34.94725,4.54608-51.758s-20.11671-30.75035-37.3597-35.26409-37.01356,1.06186-48.53371,14.66262c-12.04649,14.22215-13.99821,35.06129-8.71923,52.93641s16.85751,33.22578,29.579,46.84748A195.4652,195.4652,0,0,1,720.926,232.02061c-.64717-5.73728-1.02538-11.65123.59548-17.19271s5.6099-10.70314,11.16965-12.26017" transform="translate(-274 -164.93737)" fill="#4a4a4a"/>
                 <path d="M925,709.06263H544a1,1,0,0,1,0-2H925a1,1,0,0,1,0,2Z" transform="translate(-274 -164.93737)" fill="#6a6a6a"/>
@@ -52,50 +41,43 @@
                 <polygon points="606.594 455.892 606.594 451.847 531.112 453.87 528.723 556.325 539.894 570.125 606.594 455.892" fill="#6a6a6a"/>
                 <polygon points="619.956 454.468 538.142 456.33 539.894 570.125 618.849 561.615 619.956 454.468" fill="#e4e4e4"/>
             </svg>
+            <div class="error-mark"></div>
         </div>
 
-        <h1 class="thank-you-title">Thank You!</h1>
-        <p class="thank-you-subtitle">Your payment has been processed successfully</p>
+        <h1 class="failed-title">Payment Failed</h1>
+        <p class="failed-subtitle">We couldn't process your payment at this time</p>
 
-        <div class="order-id">
-            Order ID: #ODR-{{ order_id }}
+        <div class="transaction-id">
+            Transaction ID: #TXN-{{ payment_id }}
         </div>
 
-        <div class="order-details">
-            <h3>Payment Details</h3>
-            <div class="detail-row">
-                <span class="detail-label">Product</span>
-                <span class="detail-value">{{ product_name }}</span>
+        <div class="error-details">
+            <h3>What Went Wrong?</h3>
+
+            <div class="error-reason">
+                <h4>Payment Declined</h4>
+                <p>{{ error_message }}</p>
             </div>
-            <div class="detail-row">
-                <span class="detail-label">Payment Method</span>
-                <span class="detail-value">{{ payment_method }}</span>
-                <span class="detail-value">{{ payment_details }}</span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">Transaction Date</span>
-                <span class="detail-value" id="transaction-date"></span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">Amount Paid</span>
-                <span class="detail-value">₹{{ amount }}</span>
+
+            <div class="error-reason">
+                <h4>Product Details</h4>
+                <p>{{ product_name }} - ₹{{ amount }}</p>
             </div>
         </div>
 
         <div class="next-steps">
-            <h4>What happens next?</h4>
+            <h4>What to do next?</h4>
             <ul>
-                <li>You'll receive an email confirmation within 5 minutes</li>
-                <li>Your order will be processed within 24 hours</li>
-                <li>Estimated delivery: 3-5 business days</li>
-                <li>Track your order using the Order ID above</li>
+                <li>Check your payment details and ensure they are correct</li>
+                <li>Verify that your card has sufficient funds available</li>
+                <li>Try using a different payment method</li>
+                <li>Contact your bank if the issue persists</li>
             </ul>
         </div>
 
         <div class="action-buttons">
-            <button class="btn btn-primary" onclick="downloadReceipt('{{ order_id|escapejs }}', '{{ amount|escapejs }}', '{{ payment_method|escapejs }}')">Download Receipt</button>
-            <a href="#" class="btn btn-secondary" onclick="trackOrder()">Track Order</a>
-            <a href="#" class="btn btn-secondary" onclick="continueShopping()">Continue Shopping</a>
+            <button class="btn btn-primary" onclick="retryPayment()">Try Again</button>
+            <a href="#" class="btn btn-secondary" onclick="contactSupport()">Contact Support</a>
         </div>
 
         <div class="support-info">
@@ -104,6 +86,6 @@
         </div>
     </div>
 
-    <script src="{% static 'js/paymentSuccess.js' %}"></script>
+    <script src="{% static 'js/paymentFailed.js' %}"></script>
 </body>
 </html>

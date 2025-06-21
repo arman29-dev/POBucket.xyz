@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/404.css' %}">
+
+    <title>Page Not Found - POBucket</title>
+</head>
+<body>
+    <div class="error-container">
+        <div class="not-found-illustration floating">
+            <svg xmlns="http://www.w3.org/2000/svg" width="652" height="570" viewBox="0 0 652 570" role="img">
+                <!-- 404 Illustration -->
+                <g transform="translate(50, 50)">
+                    <!-- Background elements -->
+                    <circle cx="300" cy="200" r="150" fill="rgba(99, 212, 255, 0.1)" opacity="0.5"/>
+                    <circle cx="100" cy="300" r="80" fill="rgba(99, 212, 255, 0.05)" opacity="0.7"/>
+
+                    <!-- Main character/robot -->
+                    <g transform="translate(250, 150)">
+                        <!-- Robot body -->
+                        <rect x="0" y="50" width="100" height="120" rx="20" fill="#4a4a4a" stroke="#63d4ff" stroke-width="2"/>
+
+                        <!-- Robot head -->
+                        <rect x="10" y="0" width="80" height="60" rx="15" fill="#4a4a4a" stroke="#63d4ff" stroke-width="2"/>
+
+                        <!-- Eyes -->
+                        <circle cx="30" cy="25" r="8" fill="#63d4ff"/>
+                        <circle cx="60" cy="25" r="8" fill="#63d4ff"/>
+                        <circle cx="30" cy="25" r="4" fill="#ffffff"/>
+                        <circle cx="60" cy="25" r="4" fill="#ffffff"/>
+
+                        <!-- Mouth -->
+                        <rect x="35" y="35" width="20" height="8" rx="4" fill="#ff6b6b"/>
+
+                        <!-- Arms -->
+                        <rect x="-20" y="70" width="15" height="60" rx="7" fill="#4a4a4a" stroke="#63d4ff" stroke-width="2"/>
+                        <rect x="105" y="70" width="15" height="60" rx="7" fill="#4a4a4a" stroke="#63d4ff" stroke-width="2"/>
+
+                        <!-- Legs -->
+                        <rect x="20" y="170" width="15" height="60" rx="7" fill="#4a4a4a" stroke="#63d4ff" stroke-width="2"/>
+                        <rect x="65" y="170" width="15" height="60" rx="7" fill="#4a4a4a" stroke="#63d4ff" stroke-width="2"/>
+
+                        <!-- Chest panel -->
+                        <rect x="25" y="80" width="50" height="40" rx="5" fill="#2a2a2a" stroke="#63d4ff" stroke-width="1"/>
+                        <circle cx="35" cy="90" r="3" fill="#ff6b6b"/>
+                        <circle cx="50" cy="90" r="3" fill="#4CAF50"/>
+                        <circle cx="65" cy="90" r="3" fill="#ffa726"/>
+
+                        <!-- Question mark above head -->
+                        <text x="50" y="-20" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#63d4ff" text-anchor="middle">?</text>
+                    </g>
+
+                    <!-- Floating elements -->
+                    <g opacity="0.6">
+                        <circle cx="150" cy="100" r="5" fill="#63d4ff">
+                            <animate attributeName="cy" values="100;80;100" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="450" cy="150" r="7" fill="#4fc3f7">
+                            <animate attributeName="cy" values="150;130;150" dur="2.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="100" cy="400" r="6" fill="#63d4ff">
+                            <animate attributeName="cy" values="400;380;400" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                    </g>
+
+                    <!-- Ground line -->
+                    <line x1="0" y1="420" x2="550" y2="420" stroke="#6a6a6a" stroke-width="2" opacity="0.5"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="error-code neon-glow">404</div>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-subtitle">The page you're looking for seems to have wandered off into the digital void.<br>Let's help you find your way back!</p>
+
+        <div class="breadcrumb">
+            <h4>You were trying to reach:</h4>
+            <div class="breadcrumb-path">
+                <a href="#" class="breadcrumb-item">POBucket</a>
+                <span class="breadcrumb-separator">></span>
+                <a href="#" class="breadcrumb-item">Products</a>
+                <span class="breadcrumb-separator">></span>
+                <span style="color: #ff6b6b;">Unknown Page</span>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <h3>Search for what you need</h3>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search products, categories, or pages..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Search</button>
+            </div>
+
+            <div class="suggestions">
+                <div class="suggestion-item" onclick="goToPage('/')">
+                    <h4>🏠 Homepage</h4>
+                    <p>Return to our main page</p>
+                </div>
+
+                <div class="suggestion-item" onclick="goToPage('/products')">
+                    <h4>🛍️ Products</h4>
+                    <p>Browse our product catalog</p>
+                </div>
+
+                <div class="suggestion-item" onclick="goToPage('/categories')">
+                    <h4>📂 Categories</h4>
+                    <p>Explore product categories</p>
+                </div>
+
+                <div class="suggestion-item" onclick="goToPage('/account')">
+                    <h4>👤 My Account</h4>
+                    <p>Access your account settings</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="#" class="btn btn-primary" onclick="goHome()">Go to Homepage</a>
+            <a href="#" class="btn btn-secondary" onclick="goBack()">Go Back</a>
+            <a href="#" class="btn btn-secondary" onclick="contactSupport()">Contact Support</a>
+        </div>
+
+        <div class="support-info">
+            <p>Still can't find what you're looking for?</p>
+            <p>Contact us at <a href="mailto:support@pobucket.com">support@pobucket.com</a> | <a href="tel:+911234567890">+91 12345 67890</a></p>
+        </div>
+    </div>
+
+    <script src="{% static 'js/404.js' %}"></script>
+</body>
+</html>

@@ -21,8 +21,6 @@
             crossorigin="anonymous"
         />
 
-        <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
-
         <style>
             main {
                 padding: 35px;
@@ -251,7 +249,7 @@
                                     More Info <i class="bi bi-info-circle"></i>
                                 </button>
                             </div>
-                            <a class="btn btn-success col-7 mx-auto" id="buy-btn" href="#">
+                            <a class="btn btn-success col-7 mx-auto" id="buy-btn" href="{% url 'buyer-payment' buyer product.pid %}">
                                 Buy Now <i class="bi bi-bag"></i>
                             </a>
                         </div>

@@ -26,7 +26,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=10, choices=categories, default='software')
     tags = models.CharField(max_length=255, null=True)
-    image = models.ImageField(upload_to=f'products/', blank=True)
+    image = models.ImageField(upload_to='products/', blank=True)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='product')
     publish_date = models.DateTimeField(default=timezone.now, verbose_name="publish date")
     bid_status = models.BooleanField(default=False, verbose_name="bit status")  # Flag to mark if auction/bidding is open
@@ -60,21 +60,23 @@ class Bid(models.Model):
             self.product.save()
 
 
-class Sales(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sales")  # Product sold
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="sales")  # Seller
+class Sale(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sale")  # Product sold
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="sale")  # Seller
     buyer = models.ForeignKey("buyer.Buyer", on_delete=models.CASCADE, null=True, blank=True, related_name="purchases")  # Buyer
+    payment = models.ForeignKey("buyer.Payment", on_delete=models.CASCADE, null=True, blank=True, related_name="sale")  # Payment
     final_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Sale price (highest bid or base price)
     sale_date = models.DateTimeField(default=timezone.now, verbose_name="Sale Date")  # Date of sale
 
     def __str__(self):
-        return f"{self.product.name} sold by {self.seller.username} to {self.buyer.username} for ₹{self.final_price}"
+        return self.product.name
 
 
 class RouteError(models.Model):
+    eid = models.CharField(max_length=15, default='xxxxx-xxxxx')
     title = models.CharField(max_length=122)
     message = models.TextField()
-    field = models.CharField(max_length=122)
+    route = models.CharField(max_length=122)
     time = models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:

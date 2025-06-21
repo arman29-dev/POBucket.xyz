@@ -7,6 +7,7 @@ import secrets
 
 
 class Buyer(models.Model):
+    fullname = models.CharField(max_length=100, default=None)
     username = models.CharField(max_length=100)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=20, null=True, default=None)
@@ -41,6 +42,18 @@ class Buyer(models.Model):
         return str(self.email)
 
 
+class Payment(models.Model):
+    buyer = models.ForeignKey(Buyer, on_delete=models.SET_NULL, null=True, blank=True)
+    product = models.ForeignKey("seller.Product", on_delete=models.SET_NULL, null=True, blank=True)
+    order_id = models.CharField(max_length=100, unique=True)
+    payment_id = models.CharField(max_length=100)
+    status = models.CharField(max_length=20)
+    payment_method = models.CharField(max_length=50, default='Online Payment')
+    updated_at = models.DateTimeField(auto_now=True)
+    amount = models.IntegerField()
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class History(models.Model):
     product = models.ForeignKey("seller.Product", on_delete=models.SET_NULL, null=True)
     seller = models.ForeignKey("seller.Seller", on_delete=models.SET_NULL, null=True)
@@ -52,9 +65,10 @@ class History(models.Model):
 
 
 class RouteError(models.Model):
+    eid = models.CharField(max_length=15, default='xxxxx-xxxxx')
     title = models.CharField(max_length=122)
     message = models.TextField()
-    field = models.CharField(max_length=122)
+    route = models.CharField(max_length=122)
     time = models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:

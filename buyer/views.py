@@ -1,17 +1,23 @@
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.csrf import csrf_protect
-# from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
 from django.contrib import messages
 
 from seller.models import Product, Bid
-from .models import Buyer, RouteError
+from .models import Buyer, Payment, RouteError
 
+from .payment_utils import process_successful_payment
 from . import login_required, send_prc_email, hide_email
-# from . import razorpay_client
+from .razorpay_config import create_rzp_client, RZP_TEST_ID
 
 from termcolor import cprint
+from nanoid import generate
 from sqlite3 import IntegrityError
+from razorpay.errors import SignatureVerificationError
 from werkzeug.security import generate_password_hash, check_password_hash
+
+import json
 
 
 # index route (default)
@@ -58,7 +64,10 @@ def login(request):
 
             except Exception as E:
                 error = RouteError(
-                    title="Buyer Authentication", message=E, field="Login Route"
+                    eid=generate(size=10),
+                    title="Buyer Authentication",
+                    message=E,
+                    field="Login Route"
                 )
                 error.save()
 
@@ -117,7 +126,10 @@ def register(request):
 
             except IntegrityError as IE:
                 error = RouteError(
-                    title="Buyer Registration", message=IE, field="Registration Route"
+                    eid=generate(size=10),
+                    title="Buyer Registration",
+                    message=IE,
+                    field="Registration Route"
                 )
                 error.save()
 
@@ -163,6 +175,7 @@ def profile(request, buyer):
 
     except Exception as E:
         profileError = RouteError(
+            eid=generate(size=10),
             title="Profile update issue",
             field="Profile Route",
             message=E,
@@ -192,6 +205,7 @@ def password_reset(request, buyer):
 
         except Exception as E:
             error = RouteError(
+                eid=generate(size=10),
                 title="Issue mailing 2FA code",
                 field="Password Reset Route",
                 message=E,
@@ -217,6 +231,7 @@ def password_reset(request, buyer):
 
             except Exception as E:
                 error = RouteError(
+                    eid=generate(size=10),
                     title="issue in password update",
                     field="Password Reset Route",
                     message=E,
@@ -253,8 +268,11 @@ def place_bid(request, buyer, pid):
         bid_amount = float(bid_amount)
 
         # Create and save bid
-        bid = Bid.objects.create(product=product, bidder=buyer, bid_amount=bid_amount)
-        bid.save()
+        bid = Bid.objects.create(
+            product=product,
+            bidder=buyer,
+            bid_amount=bid_amount
+        ); bid.save()
 
         # updating product price
         product.price = bid_amount
@@ -266,3 +284,163 @@ def place_bid(request, buyer, pid):
         return redirect("buyer-portal", buyer=buyer.email)
 
     return redirect("buyer-portal", buyer=buyer.username)
+
+
+# Payment Route
+@login_required
+def payment(request, buyer, pid):
+    product = get_object_or_404(Product, pid=pid)
+    user = get_object_or_404(Buyer, email=buyer)
+    total_price = int(product.price) + 100
+
+    if request.method == "GET":
+        return render(
+            request, 'rzpCheckout.html',
+            {
+                "user": user,
+                "product": product,
+                "total": total_price,
+                "razorpay_key": RZP_TEST_ID,
+            },
+        )
+
+    if request.method == "POST":
+        rzp_client = create_rzp_client()
+        order = rzp_client.order.create(
+            dict(
+                amount=total_price*100,
+                currency="INR",
+                payment_capture="1",
+                notes={
+                    'buyer_id': str(buyer),
+                    'product_id': str(pid),
+                }
+            )
+        )
+
+        # Store order details in session for verification later
+        request.session[f'ODR-{order["id"]}'] = {
+            'product_id': pid,
+            'buyer_email': buyer,
+            'amount': order["amount"],
+            'status': 'created',
+        }
+
+        return JsonResponse({
+            "order_id": order["id"],
+            "amount": order["amount"],
+            "currency": order["currency"],
+            "razorpay_key": RZP_TEST_ID,
+        })
+
+
+# Payment verification route
+@csrf_exempt
+@require_POST
+def verify_payment(request):
+    try:
+        # Get payment data from POST request
+        payment_data = json.loads(request.body)
+        razorpay_order_id = payment_data.get('razorpay_order_id')
+        razorpay_payment_id = payment_data.get('razorpay_payment_id')
+        razorpay_signature = payment_data.get('razorpay_signature')
+        payment_method = payment_data.get('payment_method', 'Online Payment')
+        product_name = payment_data.get('product_name')
+
+        print(f"Payment verification for order: {razorpay_order_id}")
+        print(f"Payment method: {payment_method}")
+
+        # Verify the payment signature
+        rzp_client = create_rzp_client()
+
+        # Get order details from session
+        order_data = request.session.get(f'ODR-{razorpay_order_id}')
+        if not order_data:
+            return render(
+                request, 'paymentFailed.html',
+                {
+                    'error_message': "Order ID was not found of your payment process.",
+                    'payment_id': razorpay_payment_id,
+                    'product_name': product_name,
+                    'amount': order_data['amount'] / 100,
+                }
+            )
+
+        # Verify signature
+        params_dict = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': razorpay_payment_id,
+            'razorpay_signature': razorpay_signature
+        }
+
+        try:
+            rzp_client.utility.verify_payment_signature(params_dict)
+
+            # Update order status in session
+            order_data['status'] = 'success'
+            order_data['payment_id'] = razorpay_payment_id
+            request.session[f'ODR-{razorpay_order_id}'] = order_data
+
+            # Create payment record in database
+            buyer = get_object_or_404(Buyer, email=order_data['buyer_email'])
+            product = get_object_or_404(Product, pid=order_data['product_id'])
+
+            # Create Payment record
+            payment = Payment(
+                status='completed',
+                buyer=buyer, product=product,
+                order_id=razorpay_order_id,
+                payment_id=razorpay_payment_id,
+                amount=order_data['amount'] / 100,
+                payment_method=payment_data.get('payment_method', 'Online Payment'),
+            ); payment.save()
+
+            # Create a sales record for the successful payment
+            sale = process_successful_payment(razorpay_payment_id)
+
+            # Store buyer email in session to maintain authentication after redirect
+            request.session[order_data['buyer_email']] = True
+            # Make sure session is saved immediately
+            request.session.modified = True
+
+            return render(
+                request, 'paymentSuccess.html',
+                {
+                    'order_id': razorpay_order_id,
+                    'product_name': product_name,
+                    'amount': order_data['amount'] / 100,
+                    'payment_method': payment_method,
+                }
+            )
+
+        except SignatureVerificationError as SVE:
+            # Update order status in session
+            order_data['status'] = 'failed'
+            request.session[f'ODR-{razorpay_order_id}'] = order_data
+
+            return render(
+                request, 'paymentFailed.html',
+                {
+                    'error_message': str(SVE),
+                    'payment_id': razorpay_payment_id,
+                    'product_name': product_name,
+                    'amount': order_data['amount'] / 100,
+                }
+            )
+
+    except Exception as E:
+        eid = generate(size=10)
+        error = RouteError(
+            eid=eid,
+            title="Payment Verification Error",
+            field="Payment Verification Route",
+            message=str(E)
+        ); error.save()
+
+        return render(
+            request, '500.html',
+            {
+                'error_message': str(E),
+                'eid': eid,
+            }
+        )
