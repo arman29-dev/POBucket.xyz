@@ -72,7 +72,7 @@
     <script>
         const API_DATA = {
             "apiUrl": "{% url 'buyer-email-verification' buyer.id|escapejs %}",
-            "id": "{{ buyer.id }}"
+            "uid": "{{ buyer.uid }}"
         }
     </script>
     <script src="{% static 'js/accountVerification.js' %}"></script>

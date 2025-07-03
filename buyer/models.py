@@ -68,11 +68,11 @@ class History(models.Model):
 
 
 class RouteError(models.Model):
-    eid = models.CharField(max_length=15, default='xxxxx-xxxxx')
+    eid = models.CharField(max_length=15, primary_key=True, default='xxxxx-xxxxx')
     title = models.CharField(max_length=122)
     message = models.TextField()
     route = models.CharField(max_length=122)
     time = models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:
-        return str(self.title)
+        return str(self.eid)

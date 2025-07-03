@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle resend
     resendButton.addEventListener('click', async function () {
-        const { apiUrl, id } = API_DATA;
+        const { apiUrl, uid } = API_DATA;
         if (!resendButton.disabled) {
             try {
                 // Show loading state
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         "X-CSRFToken": getCookie('csrftoken')
                     },
                     body: JSON.stringify({
-                        id: id
+                        uid: uid
                     })
                 });
 

@@ -115,7 +115,7 @@ def register(request):
 @csrf_exempt
 def email_verification(request, id):
     if request.method == "GET":
-        buyer = get_object_or_404(Buyer, id=id)
+        buyer = get_object_or_404(Buyer, uid=id)
         code = buyer.generate_2FA_code(); buyer.save()
 
         send_acnt_verify_mail(buyer, code)
@@ -126,9 +126,9 @@ def email_verification(request, id):
     if request.method == "POST":
         data = json.loads(request.body)
         code = data.get('code')
-        id = data.get('id')
+        uid = data.get('uid')
 
-        buyer = get_object_or_404(Buyer, id=id)
+        buyer = get_object_or_404(Buyer, uid=uid)
         is_valid, msg = buyer.validate_code(code)
 
         if is_valid:
