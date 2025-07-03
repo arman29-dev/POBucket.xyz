@@ -6,7 +6,454 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'css/404.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            color: #e0e0e0;
+        }
+
+        .error-container {
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .not-found-illustration {
+            width: 300px;
+            height: 250px;
+            margin: 0 auto 30px;
+            animation: bounceIn 1s ease-out 0.3s both;
+            position: relative;
+        }
+
+        .not-found-illustration svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 30px rgba(99, 212, 255, 0.3));
+        }
+
+        /* Floating animation for the illustration */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            color: #ef574e;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+            text-shadow: 0 5px 15px rgba(99, 212, 255, 0.3);
+            letter-spacing: -4px;
+            position: relative;
+        }
+
+        /* Neon glow effect for 404 */
+        .neon-glow {
+            position: relative;
+            animation: neonGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from {
+                text-shadow:
+                    0 0 5px #fc6484,
+                    0 0 10px #fc6484,
+                    0 0 15px #fc6484,
+                    0 0 20px #fc6484;
+            }
+
+            to {
+                text-shadow:
+                    0 0 10px #fc6484,
+                    0 0 20px #fc6484,
+                    0 0 30px #fc6484,
+                    0 0 40px #fc6484;
+            }
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .error-subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out 0.9s both;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-container {
+            background: rgba(40, 40, 40, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease-out 1.1s both;
+        }
+
+        .search-container h3 {
+            color: #ffffff;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid rgba(99, 212, 255, 0.3);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #63d4ff;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(99, 212, 255, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: #a0a0a0;
+        }
+
+        .search-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #63d4ff, #4fc3f7);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(99, 212, 255, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 212, 255, 0.4);
+        }
+
+        .suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .suggestion-item {
+            background: rgba(99, 212, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(99, 212, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(99, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .suggestion-item h4 {
+            color: #63d4ff;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .suggestion-item p {
+            color: #d0d0d0;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .breadcrumb {
+            background: rgba(40, 40, 40, 0.6);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 1.3s both;
+            text-align: left;
+        }
+
+        .breadcrumb h4 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .breadcrumb-path {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .breadcrumb-item {
+            color: #63d4ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item:hover {
+            color: #4fc3f7;
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: #a0a0a0;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 1.5s both;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #63d4ff, #4fc3f7);
+            color: #1a1a1a;
+            box-shadow: 0 5px 15px rgba(99, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99, 212, 255, 0.4);
+            background: linear-gradient(135deg, #4fc3f7, #63d4ff);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #63d4ff;
+            color: #63d4ff;
+            transform: translateY(-3px);
+        }
+
+        .support-info {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            animation: fadeInUp 0.8s ease-out 1.7s both;
+        }
+
+        .support-info a {
+            color: #63d4ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-info a:hover {
+            text-decoration: underline;
+            color: #4fc3f7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .error-container {
+                padding: 40px 25px;
+                margin: 10px;
+            }
+
+            .error-code {
+                font-size: 6rem;
+                letter-spacing: -2px;
+            }
+
+            .error-title {
+                font-size: 2rem;
+            }
+
+            .error-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .not-found-illustration {
+                width: 250px;
+                height: 200px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .suggestions {
+                grid-template-columns: 1fr;
+            }
+
+            .breadcrumb-path {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-container {
+                padding: 30px 20px;
+            }
+
+            .error-code {
+                font-size: 4rem;
+            }
+
+            .error-title {
+                font-size: 1.8rem;
+            }
+
+            .not-found-illustration {
+                width: 200px;
+                height: 160px;
+            }
+        }
+
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 212, 255, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 212, 255, 0.7);
+        }
+    </style>
 
     <title>Page Not Found - POBucket</title>
 </head>
@@ -131,6 +578,196 @@
         </div>
     </div>
 
-    <script src="{% static 'js/404.js' %}"></script>
+    <script>
+        // Search functionality
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (searchTerm) {
+                showNotification(`Searching for "${searchTerm}"...`, 'info');
+                setTimeout(() => {
+                    // In a real application, this would perform an actual search
+                    window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
+                }, 1000);
+            } else {
+                showNotification('Please enter a search term', 'warning');
+            }
+        }
+
+        // Handle Enter key in search input
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Navigation functions
+        function goHome() {
+            showNotification('Redirecting to homepage...', 'info');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        }
+
+        function goBack() {
+            showNotification('Going back...', 'info');
+            setTimeout(() => {
+                window.history.back();
+            }, 1000);
+        }
+
+        function goToPage(url) {
+            showNotification('Redirecting...', 'info');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1000);
+        }
+
+        // Contact support function
+        function contactSupport() {
+            const supportModal = document.createElement('div');
+            supportModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease-out;
+            `;
+
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: rgba(40, 40, 40, 0.95);
+                border-radius: 15px;
+                padding: 30px;
+                max-width: 500px;
+                width: 90%;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                position: relative;
+                animation: slideUp 0.4s ease-out;
+            `;
+
+            modalContent.innerHTML = `
+                <h3 style="color: #ffffff; font-size: 1.5rem; margin-bottom: 20px; text-align: center;">Need Help Finding Something?</h3>
+                <p style="color: #d0d0d0; margin-bottom: 20px;">Our support team can help you locate the page or content you're looking for.</p>
+                <div style="margin-bottom: 20px;">
+                    <p style="color: #a0a0a0; margin-bottom: 5px;">Email Support:</p>
+                    <p style="color: #63d4ff; font-weight: 600;">support@pobucket.com</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <p style="color: #a0a0a0; margin-bottom: 5px;">Phone Support:</p>
+                    <p style="color: #63d4ff; font-weight: 600;">+91 12345 67890</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <p style="color: #a0a0a0; margin-bottom: 5px;">Live Chat:</p>
+                    <p style="color: #63d4ff; font-weight: 600;">Available 24/7 on our website</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <p style="color: #a0a0a0; margin-bottom: 5px;">Requested URL:</p>
+                    <p style="color: #ff6b6b; font-weight: 600; word-break: break-all;">${window.location.href}</p>
+                </div>
+                <button id="closeSupportModal" style="background: linear-gradient(135deg, #63d4ff, #4fc3f7); color: #1a1a1a; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 600; cursor: pointer; display: block; margin: 0 auto; box-shadow: 0 5px 15px rgba(99, 212, 255, 0.3);">Close</button>
+            `;
+
+            supportModal.appendChild(modalContent);
+            document.body.appendChild(supportModal);
+
+            document.getElementById('closeSupportModal').addEventListener('click', function () {
+                supportModal.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(supportModal);
+                }, 300);
+            });
+        }
+
+        // Show notification function
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            const bgColor = type === 'info' ? '#63d4ff' : type === 'warning' ? '#ffa726' : '#4CAF50';
+            const textColor = type === 'info' ? '#1a1a1a' : 'white';
+
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${bgColor};
+                color: ${textColor};
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: 600;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add slide animations for notifications and modals
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            @keyframes slideUp {
+                from { transform: translateY(50px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add interactive effects
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add hover effect to search container
+            const searchContainer = document.querySelector('.search-container');
+            searchContainer.addEventListener('mouseenter', function () {
+                this.style.transform = 'scale(1.02)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+
+            searchContainer.addEventListener('mouseleave', function () {
+                this.style.transform = 'scale(1)';
+            });
+
+            // Add click effect to the illustration
+            const illustration = document.querySelector('.not-found-illustration');
+            illustration.addEventListener('click', function () {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'bounceIn 0.6s ease-out, floating 3s ease-in-out infinite';
+                }, 10);
+            });
+
+            // Focus on search input when page loads
+            setTimeout(() => {
+                document.getElementById('searchInput').focus();
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
