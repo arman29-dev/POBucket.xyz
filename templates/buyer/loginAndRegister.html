@@ -21,7 +21,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/loginAndRegister.css' %}" />
 
-        <title>POB•{{ title }}</title>
+        <title>POB•Buyer</title>
     </head>
 
 
@@ -41,7 +41,7 @@
                                 <a class="nav-link" href="{% url 'site-index' %}">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="seller/login/">Seller</a>
+                                <a class="nav-link" href="{% url 'seller-login' %}">Seller</a>
                             </li>
                         </ul>
                     </div>

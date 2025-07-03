@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>POB•Password Reset Code</title>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #e2e8f0;
+            background-color: #0f172a;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background-color: #1e293b;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+        }
+
+        .code-container {
+            margin: 30px 0;
+        }
+
+        .reset-code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #f1f5f9;
+            background-color: #334155;
+            padding: 15px 25px;
+            border-radius: 6px;
+            display: inline-block;
+            border: 1px solid #475569;
+        }
+
+        p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            color: #94a3b8;
+        }
+
+        .expiry {
+            font-weight: 600;
+            color: #f87171;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            .reset-code {
+                font-size: 28px;
+                letter-spacing: 2px;
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                <rect width="80" height="50" rx="8" fill="#3b82f6"/>
+                <rect x="2" y="2" width="76" height="46" rx="6" fill="#1e40af"/>
+
+                <text x="40" y="32" font-family="Arial, sans-serif" font-size="16"
+                font-weight="bold" text-anchor="middle" fill="#ffffff">P.O.B</text>
+
+                <circle cx="15" cy="15" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="65" cy="15" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="15" cy="35" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="65" cy="35" r="2" fill="#60a5fa" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <h1>Your Account Verification Code</h1>
+
+        <p>We received a request for a new P.O.B account registration. Enter the following code to continue with your account verification:</p>
+
+        <div class="code-container">
+            <span class="reset-code">{{ code }}</span>
+        </div>
+
+        <p>If you didn't use this email for P.O.B account registration, you can safely ignore this email.</p>
+
+        <div class="footer">
+            <p>This code will expire in <span class="expiry">5 minutes</span>.</p>
+            <p>For security reasons, please do not share this code with anyone.</p>
+        </div>
+    </div>
+</body>
+</html>

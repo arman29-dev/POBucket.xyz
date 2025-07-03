@@ -86,6 +86,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
             os.path.join(BASE_DIR, 'templates', 'buyer'),
+            os.path.join(BASE_DIR, 'templates', 'seller'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

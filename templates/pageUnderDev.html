@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/pageUnderDev.css' %}">
+
+    <title>POB•Under Developmen</title>
+</head>
+<body>
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="notification" id="notification">
+        🚀 Development in progress...
+    </div>
+
+    <div class="container">
+        <div class="logo">POBucket</div>
+
+        <h1 class="main-title">Under Development</h1>
+        <p class="subtitle">We're working hard to bring you something amazing</p>
+
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <p class="progress-text">Progress: 20% Complete</p>
+
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">🎨</span>
+                <h3>Modern Design</h3>
+                <p>Clean, responsive interface with cutting-edge design principles</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">⚡</span>
+                <h3>Lightning Fast</h3>
+                <p>Optimized performance for the best user experience</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🔒</span>
+                <h3>Secure</h3>
+                <p>Built with security and privacy as top priorities</p>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <p>Want to be notified when we launch?</p>
+            <a href="mailto:p0b.he1pd3sk@gmail.com" class="email-link">POB Help Desk</a>
+        </div>
+    </div>
+
+    <script src="{% static 'js/pageUnderDev.js' %}"></script>
+</body>
+</html>

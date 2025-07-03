@@ -8,11 +8,11 @@ from seller.models import Product, Bid
 from .models import Buyer, Payment, RouteError
 
 from .payment_utils import process_successful_payment
-from . import login_required, send_prc_email, hide_email
 from .razorpay_config import create_rzp_client, RZP_TEST_ID
+from . import get_id, login_required, send_acnt_verify_mail, send_prc_email, hide_email, send_wlcm_email
 
-from termcolor import cprint
 from nanoid import generate
+from termcolor import cprint
 from sqlite3 import IntegrityError
 from razorpay.errors import SignatureVerificationError
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,7 +28,7 @@ def index(request):
 # login route
 def login(request):
     if request.method == "GET":
-        return render(request, "loginAndRegister.html", {"title": "Buyer-Login"})
+        return render(request, "loginAndRegister.html")
 
     if request.method == "POST":
         if (request.POST.get("email") in request.session) and (request.session[request.POST.get("email")] == True):
@@ -36,49 +36,26 @@ def login(request):
 
         else:
             try:
-                buyer = Buyer.objects.get(email=request.POST.get("email"))
+                buyer = get_object_or_404(Buyer, email=request.POST.get("email"))
                 cprint(f"User -> {buyer}", "yellow"); cprint(f"User Email -> {buyer.email}", "light_cyan")
-            except Buyer.DoesNotExist:
-                return render(
-                    request,
-                    "loginAndRegister.html",
-                    {
-                        "loginErrorMsg": "Invalid email!!".upper(),
-                    },
-                )
-            try:
-                if check_password_hash(buyer.password, password=request.POST.get("password")):
-                    request.session[buyer.email] = True
-                    cprint(f"{buyer.email} authenticated successfully!!".upper(), "green", attrs=["bold"],)
-                    return redirect("buyer-portal", buyer=buyer.email)
+
+                if buyer.is_verified:
+                    if check_password_hash(buyer.password, password=request.POST.get("password")):
+                        request.session[buyer.email] = True
+                        cprint(f"{buyer.email} authenticated successfully!!".upper(), "green", attrs=["bold"],)
+                        return redirect("buyer-portal", buyer=buyer.email)
+
+                    else:
+                        messages.error(request, "Invalid email or password!!".upper())
+                        return render(request, "loginAndRegister.html")
 
                 else:
-                    return render(
-                        request,
-                        "loginAndRegister.html",
-                        {
-                            "title": "Buyer-Login",
-                            "loginErrorMsg": "Invalid emai or password!!".upper(),
-                        },
-                    )
+                    messages.error(request, "Account not verified!! Check you welcom email for getting verification link".upper())
+                    return(request, 'loginAndRegister.html')
 
-            except Exception as E:
-                error = RouteError(
-                    eid=generate(size=10),
-                    title="Buyer Authentication",
-                    message=E,
-                    field="Login Route"
-                )
-                error.save()
-
-                return render(
-                    request,
-                    "loginAndRegister.html",
-                    {
-                        "title": "Buyer-Login",
-                        "loginErrorMsg": "Unable to authenticate you!!".upper(),
-                    },
-                )
+            except Exception:
+                messages.error(request, "User does not exist")
+                return render(request,"loginAndRegister.html",)
 
 
 # logout route
@@ -103,25 +80,22 @@ def register(request):
         cprint(f"Entered Data: {username, email, password}", "green")
 
         if Buyer.objects.filter(email=email).exists():
-            return render(
-                request,
-                "loginAndRegister.html",
-                {
-                    "title": "Buyer-SignUp",
-                    "signUpErrorMsg": "Email already exists!!".upper(),
-                },
-            )
+            messages.error(request, "Email already exists!")
+            return render(request,"loginAndRegister.html")
 
         elif password == confirm_password:
             cprint(f"Email: {email} is good to go!", "green", attrs=["bold"])
             try:
                 buyer = Buyer(
+                    id=get_id(),
                     username=username,
                     email=email,
                     password=generate_password_hash(password),
-                )
-                buyer.save()
+                ); buyer.save()
 
+                send_wlcm_email(buyer)
+
+                messages.success(request, f"Registration successful! Check mail ({hide_email(email)}) for verification link.")
                 return redirect("buyer-login")
 
             except IntegrityError as IE:
@@ -133,7 +107,45 @@ def register(request):
                 )
                 error.save()
 
-                return redirect("admin")
+                messages.error(request, "An error occurred while registering.")
+                return redirect("buyer-login")
+
+
+# Buyer verification route
+@csrf_exempt
+def email_verification(request, id):
+    if request.method == "GET":
+        buyer = get_object_or_404(Buyer, id=id)
+        code = buyer.generate_2FA_code(); buyer.save()
+
+        send_acnt_verify_mail(buyer, code)
+
+        messages.info(request, f"Check {hide_email(buyer.email)} for account verification link.")
+        return render(request, "buyer/accountVerification.html", {"buyer": buyer})
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+        code = data.get('code')
+        id = data.get('id')
+
+        buyer = get_object_or_404(Buyer, id=id)
+        is_valid, msg = buyer.validate_code(code)
+
+        if is_valid:
+            buyer.is_verified = True
+            buyer.clear_verification_code()
+            buyer.save()
+
+            return JsonResponse(
+                {
+                    'success': True,
+                    'message': 'Verification successful',
+                    'redirectUrl': '/buyer/login/'
+                }
+            )
+
+        else:
+            return JsonResponse({'success': False, 'message': msg}, status=401)
 
 
 # portal route
@@ -154,23 +166,27 @@ def portal(request, buyer):
 # profile route
 @login_required
 def profile(request, buyer):
-    user = Buyer.objects.get(email=buyer)
+    user = get_object_or_404(Buyer, email=buyer)
     user_data = request.POST.dict()
 
     try:
         if "updatedUsername" in user_data:
-            usernames = list(Buyer.objects.values_list("username", flat=True))
-            if user_data["updatedUsername"] in usernames:
+            if Buyer.objects.filter(username=user_data['updatedUsername']).exists():
                 messages.error(request, "Username already exist")
                 return redirect("buyer-portal", buyer=buyer)
 
-            else: user.username = user_data["updatedUsername"]
+            user.username = user_data["updatedUsername"]
 
         if "updatedEmail" in user_data:
+            if Buyer.objects.filter(email=user_data['updatedEmail']).exists():
+                messages.error(request, "Email already exist")
+                return redirect("buyer-portal", buyer=buyer)
+
             user.email = user_data["updatedEmail"]; user.save()
             messages.info(request, "Email updated successfully. Re-Login required")
             return redirect('buyer-logout', buyer=buyer)
 
+        if "updatedFullname" in user_data: user.fullname = user_data["updatedFullname"]
         if "updatedPhoneNo" in user_data: user.phone = user_data["updatedPhoneNo"]
 
     except Exception as E:
@@ -195,13 +211,12 @@ def profile(request, buyer):
 @csrf_protect
 def password_reset(request, buyer):
     user = get_object_or_404(Buyer, email=buyer)
-    hidden_email = hide_email(user.email)
 
     if request.method == "GET":
         code = user.generate_2FA_code()
         try:
             send_prc_email(user, code)
-            messages.success(request, f"Email with 2FA code sent to {hidden_email} for resetting the password!")
+            messages.success(request, f"Email with 2FA code sent to {hide_email(user.email)} for resetting the password!")
 
         except Exception as E:
             error = RouteError(
@@ -249,11 +264,9 @@ def password_reset(request, buyer):
 # history route
 @login_required
 def history(request, buyer):
-    return render(request, "history.html",
-        {
-            "title": "history",
-            "buyer": buyer
-        }
+    return render(request,
+        "pageUnderDev.html",
+        {"buyer": buyer}
     )
 
 

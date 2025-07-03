@@ -366,14 +366,37 @@
                             <div class="modal-body bg-dark text-light">
                                 <div class="row g-1">
                                     <div class="col-4">
-                                        <div class="row g-1 mt-2"><h3>Username</h3></div>
-                                        <div class="row g-1 mt-4"><h3>Email</h3></div>
-                                        <div class="row g-1 mt-4"><h3>Phone No.</h3></div>
-                                        <div class="row g-1 mt-4"><h3>Password</h3></div>
+                                        <div class="row g-1 mt-2"><h3>Fullname</h3></div>
+                                        <div class="row g-1 mt-3"><h3>Username</h3></div>
+                                        <div class="row g-1 mt-3"><h3>Email</h3></div>
+                                        <div class="row g-1 mt-3"><h3>Phone No.</h3></div>
+                                        <div class="row g-1 mt-3"><h3>Password</h3></div>
                                     </div>
 
                                     <div class="col-8">
                                         <div class="row g-1 mt-2">
+                                            <div class="col-8" style="width: 220px;">
+                                                <input type="text" class="form-control user-input" id="updatedFullname"
+                                                name="updatedFullname" placeholder="Fullname" value="{{ buyer.fullname }}"
+                                                required readonly disabled>
+                                            </div>
+                                            <div class="col-auto d-flex gap-1">
+                                                <button type="button" class="btn btn-outline-info data-edit-btn" aria-label="edit btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-outline-danger cnl-data-edit-btn" aria-label="cancel btn">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row g-1 mt-3">
                                             <div class="col-8" style="width: 220px;">
                                                 <input type="text" class="form-control user-input" id="updatedUsername"
                                                 name="updatedUsername" placeholder="@Username" value="{{ buyer.username }}"
@@ -395,7 +418,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="row g-1 mt-4">
+                                        <div class="row g-1 mt-3">
                                             <div class="col-8" style="width: 220px;">
                                                 <input type="email" class="form-control user-input" id="updatedEmail"
                                                 name="updatedEmail" placeholder="Email" value="{{ buyer.email }}"
@@ -417,7 +440,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="row g-1 mt-4">
+                                        <div class="row g-1 mt-3">
                                             <div class="col-8" style="width: 220px;">
                                                 <input type="tel" class="form-control user-input" id="updatedPhoneNo"
                                                 name="updatedPhoneNo" placeholder="+(code)Phone No."
@@ -442,7 +465,6 @@
                                         </div>
                                         <div class="row g-1 mt-4" style="display: flex; justify-content: space-betweens;">
                                             <div class="col-12">
-                                                <!-- TODO: add change password link -->
                                                 <a class="btn btn-outline-warning" href="{% url 'buyer-password-reset' buyer %}" style="width: 100%;">CHANGE PASSWORD</a>
                                             </div>
                                         </div>

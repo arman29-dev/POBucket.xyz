@@ -16,12 +16,13 @@ Including another URLconf
 """
 
 from django.urls import path
-from buyer import views
+from . import views
 
 
 urlpatterns = [
     path('login/', views.login, name='buyer-login'),
     path('register/', views.register, name='buyer-registration'),
+    path('verify-email/<str:id>/', views.email_verification, name='buyer-email-verification'),
     path('logout/<str:buyer>/', views.logout, name='buyer-logout'),
     path('profile/<str:buyer>/', views.profile, name='buyer-profile'),
     path('portal/<str:buyer>/', views.portal, name='buyer-portal'),

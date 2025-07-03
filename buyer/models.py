@@ -7,11 +7,14 @@ import secrets
 
 
 class Buyer(models.Model):
-    fullname = models.CharField(max_length=100, default=None)
+    id = models.CharField(primary_key=True, max_length=10, default='xxxxxxxxxx')
+    fullname = models.CharField(max_length=100, null=True, default=None)
     username = models.CharField(max_length=100)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=20, null=True, default=None)
     password = models.CharField(max_length=256)
+
+    is_verified = models.BooleanField(default=False)
 
     verification_code = models.CharField(max_length=6, blank=True, null=True)
     code_expires_at = models.DateTimeField(blank=True, null=True)

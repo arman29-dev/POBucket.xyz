@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/accountVerification.css' %}">
+
+    <title>POB•Email Verification</title>
+
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background rounded rectangle -->
+                <rect width="80" height="50" rx="8" fill="#3b82f6"/>
+                <rect x="2" y="2" width="76" height="46" rx="6" fill="#1e40af"/>
+
+                <!-- P.O.B text -->
+                <text x="40" y="32" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#ffffff">P.O.B</text>
+
+                <!-- Decorative dots -->
+                <circle cx="15" cy="15" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="65" cy="15" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="15" cy="35" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="65" cy="35" r="2" fill="#60a5fa" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <h1>Verify Your Email</h1>
+
+        <p class="subtitle">We've sent a verification code to your email address. Please enter the 6-digit code below to verify your account.</p>
+
+        <div class="email-display">
+            <div class="email-label">Verification code sent to:</div>
+            <span class="user-email">{{ buyer.email }}</span>
+        </div>
+
+        <div class="verification-section">
+            <div class="code-label">Enter verification code:</div>
+
+            <div class="code-input-container">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="code1">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="code2">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="code3">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="code4">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="code5">
+                <input type="text" class="code-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="code6">
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                Invalid verification code. Please try again.
+            </div>
+
+            <div class="success-message" id="successMessage">
+                Email verified successfully! Redirecting...
+            </div>
+
+            <button class="verify-button" id="verifyButton" disabled>Verify Email</button>
+        </div>
+
+        <div class="resend-section">
+            <div class="resend-text">Didn't receive the code?</div>
+            <button class="resend-button" id="resendButton">
+                Resend code <span class="timer" id="timer"></span>
+            </button>
+        </div>
+    </div>
+    <script>
+        const API_DATA = {
+            "apiUrl": "{% url 'buyer-email-verification' buyer.id|escapejs %}",
+            "id": "{{ buyer.id }}"
+        }
+    </script>
+    <script src="{% static 'js/accountVerification.js' %}"></script>
+</body>
+</html>
