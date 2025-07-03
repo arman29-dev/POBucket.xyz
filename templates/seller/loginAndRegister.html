@@ -1,0 +1,130 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bgStyle.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/loginAndRegister.css' %}" />
+
+        <title>POB•Seller</title>
+    </head>
+
+
+    <body class="bg-grid">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'site-index' %}"><h4>P.O.Bucket</h4></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'site-index' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'buyer-login' %}">Buyer</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        {% if messages %}
+        {% for message in messages %}
+        <!-- alert msg box -->
+        <div class="custom-alert alert-dismissible fade show" role="alert" style="width: auto;">
+            <div class="alert-content {{ message.level }}">
+                <i class="bi bi-info-circle-fill alert-icon"></i>
+                <span class="alert-message">{{ message }}</span>
+            </div>
+            <button type="button" class="alert-close" data-bs-dismiss="alert" aria-label="Close">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <section style="padding-top: 300px">
+            <div class="wrapper">
+                <div class="card-switch">
+                    <label class="switch">
+                        <input type="checkbox" class="toggle" />
+                        <span class="slider"></span>
+                        <span class="card-side"></span>
+                        <div class="flip-card__inner">
+                            <div class="flip-card__front">
+                                <div class="title">Log in</div>
+                                {% if errorMsg %}
+                                <div id="login-error-message" style="color: red">
+                                    <p><strong>{{ loginErrorMsg }}</strong></p>
+                                </div>
+                                {% endif %}
+
+                                <form class="flip-card__form" method="post" onsubmit="return validateLoginForm()" action="{% url 'seller-login' %}">
+                                    {% csrf_token %}
+                                    <input class="flip-card__input" id="email" name="email" placeholder="Email" type="email" required/>
+                                    <input class="flip-card__input" name="password" placeholder="Password" type="password" required>
+                                    <button class="flip-card__btn">Let`s go!</button>
+                                </form>
+                            </div>
+                            <div class="flip-card__back">
+                                <div class="title">Sign up</div>
+                                {% if errorMsg %}
+                                <div id="sign-up-error-message" style="color: red">
+                                    <p><strong>{{ signUpErrorMsg }}</strong></p>
+                                </div>
+                                {% endif %}
+
+                                <form class="flip-card__form" id="signupForm" method="post"
+                                    onsubmit="return validateRegistrationForm()" action="{% url 'seller-registration' %}">
+                                    {% csrf_token %}
+                                    <input class="flip-card__input" id="username" name="username" placeholder="@Username" type="text" required />
+                                    <input class="flip-card__input" id="email" name="email" placeholder="Email" type="email" required />
+                                    <input class="flip-card__input" id="password" name="password" placeholder="Password" type="password" required />
+                                    <input class="flip-card__input" id="c-password" name="confirm-password" placeholder="Confirm Password" type="password" required />
+                                    <button class="flip-card__btn">Sign Me Up!</button>
+                                </form>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous">
+        </script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous">
+        </script>
+
+        <script src="{% static 'js/loginAndRegister.js' %}"></script>
+        <script src="{% static 'js/alert.js' %}"></script>
+
+    </body>
+</html>

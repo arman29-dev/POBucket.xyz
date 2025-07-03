@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/2FA-setup.css' %}">
+
+    <title>Two-Factor Authentication Setup</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Two-Factor Authentication</h1>
+            <p class="subtitle">Scan the QR code with your authenticator app or enter the code manually</p>
+        </div>
+
+        <div class="qr-section">
+            <div class="qr-container">
+                <div class="qr-placeholder">
+                    <img src="{{ seller.qr_code_path.url }}" id="qrCode" alt="QR Code">
+                </div>
+            </div>
+        </div>
+
+        <div class="manual-code-section">
+            <div class="manual-code-label">Manual Entry Code:</div>
+            <div class="manual-code" id="manualCode" onclick="copyToClipboard()">
+                {{ seller.twoFA_secret }}
+            </div>
+            <button class="copy-button" id="copyButton" onclick="copyToClipboard()">
+                📋 Copy Code
+            </button>
+        </div>
+
+        <div class="verification-section">
+            <div class="input-group">
+                <label class="input-label" for="verificationCode">Enter 6-digit code from your app:</label>
+                <input type="text" id="verificationCode" class="verification-input" placeholder="000000"
+                    maxlength="6" pattern="[0-9]{6}" autocomplete="off">
+            </div>
+
+            <button class="verify-button" id="verifyButton" onclick="verifyCode()">
+                Verify & Enable 2FA
+            </button>
+
+            <div class="status-message" id="statusMessage"></div>
+        </div>
+
+        <div class="help-text">
+            <strong>Need help?</strong><br>
+            Download Google Authenticator, Authy, or any TOTP-compatible app.
+            Scan the QR code or enter the manual code, then input the 6-digit code to verify.
+        </div>
+    </div>
+
+    <script>
+        const API_DATA = {
+            "success_url": "{% url 'seller-dashboard' seller.email|escapejs %}",
+            "apiUrl": "{% url 'seller-2FA-setup' seller.uid|escapejs %}",
+            "seller_email": "{{ seller.email }}"
+        }
+    </script>
+    <script src="{% static 'js/2FA-setup.js' %}"></script>
+</body>
+</html>

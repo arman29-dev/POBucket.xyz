@@ -1,13 +1,31 @@
 from django.db import models
 from django.utils import timezone
 
+from pyotp import random_base32
+from pyotp.totp import TOTP
+
 
 class Seller(models.Model):
+    uid = models.CharField(primary_key=True, max_length=10, default='xxxxxxxxxx')
     username = models.CharField(max_length=122, unique=True)
-    fullname = models.CharField(max_length=122)
+    fullname = models.CharField(max_length=122, null=True)
     email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, null=True)
     password = models.CharField(max_length=122)
+
+    twoFA_secret = models.CharField(max_length=32, blank=True, null=True)
+    qr_code_path = models.ImageField(upload_to='auth-QRs/', blank=True, null=True)
+
+    def generate_2fa_secret(self):
+        if not self.twoFA_secret:
+            self.twoFA_secret = random_base32()
+            self.save()
+
+    def get_otp_uri(self):
+        return TOTP(str(self.twoFA_secret)).provisioning_uri(
+            name=str(self.email),
+            issuer_name="P.O.Bucket"
+        )
 
     def __str__(self) -> str:
         return str(self.username)
@@ -61,10 +79,10 @@ class Bid(models.Model):
 
 
 class Sale(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sale")  # Product sold
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name="sale")  # Product sold
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="sale")  # Seller
-    buyer = models.ForeignKey("buyer.Buyer", on_delete=models.CASCADE, null=True, blank=True, related_name="purchases")  # Buyer
-    payment = models.ForeignKey("buyer.Payment", on_delete=models.CASCADE, null=True, blank=True, related_name="sale")  # Payment
+    buyer = models.ForeignKey("buyer.Buyer", on_delete=models.SET_NULL, null=True, blank=True, related_name="purchases")  # Buyer
+    payment = models.ForeignKey("buyer.Payment", on_delete=models.SET_NULL, null=True, blank=True, related_name="sale")  # Payment
     final_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Sale price (highest bid or base price)
     sale_date = models.DateTimeField(default=timezone.now, verbose_name="Sale Date")  # Date of sale
 
@@ -73,11 +91,11 @@ class Sale(models.Model):
 
 
 class RouteError(models.Model):
-    eid = models.CharField(max_length=15, default='xxxxx-xxxxx')
+    eid = models.CharField(max_length=15, primary_key=True, default='xxxxx-xxxxx')
     title = models.CharField(max_length=122)
     message = models.TextField()
     route = models.CharField(max_length=122)
     time = models.DateTimeField(default=timezone.now)
 
     def __str__(self) -> str:
-        return str(self.title)
+        return str(self.eid)
