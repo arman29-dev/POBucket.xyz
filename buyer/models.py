@@ -7,7 +7,7 @@ import secrets
 
 
 class Buyer(models.Model):
-    id = models.CharField(primary_key=True, max_length=10, default='xxxxxxxxxx')
+    uid = models.CharField(primary_key=True, max_length=10, default='xxxxxxxxxx')
     fullname = models.CharField(max_length=100, null=True, default=None)
     username = models.CharField(max_length=100)
     email = models.EmailField(max_length=255, unique=True)

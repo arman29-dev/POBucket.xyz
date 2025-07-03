@@ -9,7 +9,7 @@ from .models import Buyer, Payment, RouteError
 
 from .payment_utils import process_successful_payment
 from .razorpay_config import create_rzp_client, RZP_TEST_ID
-from . import get_id, login_required, send_acnt_verify_mail, send_prc_email, hide_email, send_wlcm_email
+from . import get_uid, login_required, send_acnt_verify_mail, send_prc_email, hide_email, send_wlcm_email
 
 from nanoid import generate
 from termcolor import cprint
@@ -87,7 +87,7 @@ def register(request):
             cprint(f"Email: {email} is good to go!", "green", attrs=["bold"])
             try:
                 buyer = Buyer(
-                    id=get_id(),
+                    id=get_uid(),
                     username=username,
                     email=email,
                     password=generate_password_hash(password),

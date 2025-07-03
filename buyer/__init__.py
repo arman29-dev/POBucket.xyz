@@ -11,9 +11,11 @@ import os
 dotenv.load_dotenv(f'{settings.BASE_DIR}/env/.env')
 
 
-def get_id():
-    return ''.join(
-        secrets.choice('0123456789') for _ in range(10))
+def get_uid(buyer):
+    while True:
+        uid = ''.join(secrets.choice('0123456789') for _ in range(10))
+        if buyer.objects.filter(uid=uid).exists(): continue
+        else: return uid
 
 
 def login_required(view_func):
