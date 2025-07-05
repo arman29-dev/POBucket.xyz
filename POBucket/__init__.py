@@ -1,11 +1,38 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+from secrets import choice
+
 import os
 import pymysql
 
 
 pymysql.install_as_MySQLdb()
+
+
+def get_uid(user):
+    while True:
+        uid = ''.join(choice('0123456789') for _ in range(10))
+        if user.objects.filter(uid=uid).exists(): continue
+        else: return uid
+
+
+def hide_email(email: str) -> str:
+    try:
+        local_part, domain = email.split("@")
+
+        if len(local_part) <= 7:
+            visible_start = local_part[:1]
+            visible_end = local_part[-1:]
+            return f"{visible_start}***{visible_end}@{domain}"
+
+        visible_start = local_part[:4]
+        visible_end = local_part[-3:]
+        masked = '*' * (len(local_part) - len(visible_start) - len(visible_end))
+        return f"{visible_start}{masked}{visible_end}@{domain}"
+
+    except ValueError:
+        raise ValueError("Invalid email format")
 
 
 def send_mail(html_content, user, subject: str):

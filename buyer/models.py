@@ -20,7 +20,7 @@ class Buyer(models.Model):
     code_expires_at = models.DateTimeField(blank=True, null=True)
 
 
-    def generate_2FA_code(self, expiry_minutes=5):
+    def generate_verification_code(self, expiry_minutes=5):
         code = ''.join(secrets.choice('0123456789') for _ in range(6))
         self.verification_code = code
         self.code_expires_at = timezone.now() + timedelta(minutes=expiry_minutes)

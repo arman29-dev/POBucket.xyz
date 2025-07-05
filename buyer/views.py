@@ -4,13 +4,12 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.contrib import messages
 
-from seller.models import Product, Bid
-from .models import Buyer, Payment, RouteError
-
-from POBucket import send_wlcm_email, send_prc_email, send_acnt_verify_mail
+from POBucket import get_uid, hide_email, send_wlcm_email, send_prc_email, send_acnt_verify_mail
 from .razorpay_config import create_rzp_client, RZP_TEST_ID
 from .payment_utils import process_successful_payment
-from . import get_uid, login_required, hide_email
+from .models import Buyer, Payment, RouteError
+from seller.models import Product, Bid
+from . import login_required
 
 from nanoid import generate
 from termcolor import cprint
@@ -117,7 +116,7 @@ def register(request):
 def email_verification(request, id):
     if request.method == "GET":
         buyer = get_object_or_404(Buyer, uid=id)
-        code = buyer.generate_2FA_code(); buyer.save()
+        code = buyer.generate_verification_code(); buyer.save()
 
         send_acnt_verify_mail(buyer, code)
 
@@ -214,7 +213,7 @@ def password_reset(request, buyer):
     user = get_object_or_404(Buyer, email=buyer)
 
     if request.method == "GET":
-        code = user.generate_2FA_code()
+        code = user.generate_verification_code()
         try:
             send_prc_email(user, code)
             messages.success(request, f"Email with 2FA code sent to {hide_email(user.email)} for resetting the password!")
