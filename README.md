@@ -1,4 +1,4 @@
-# 🎓 P.O.Bucket.io — Academic Auction Platform
+# 🎓 P.O.Bucket.xyz — Academic Auction Platform
 
 > Empowering students to auction and monetize their academic creations.
 
@@ -212,7 +212,7 @@ Need help or have suggestions?
 
 - 📧 Email: [p0b.he1pd3sk@gmail.com](mailto:p0b.he1pd3sk@gmail.com)
 - 💬 WhatsApp: [Chat on WhatsApp](https://api.whatsapp.com/send?phone=8745951248&text=POB%20NeedHelp)
-- GitHub: [github.com/bunny-k28](https://github.com/bunny-k28)
+- GitHub: [github.com/arman29-dev](https://github.com/arman29-dev)
 
 ---
 
