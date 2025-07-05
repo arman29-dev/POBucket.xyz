@@ -4,6 +4,10 @@
 
 ---
 
+## 📸 App Flow
+
+![](./static/images/AppFlow.png)
+
 ## 📘 Project Overview
 
 **P.O.Bucket.io** is a Django-powered online marketplace where school and college students can **auction or sell academic projects** (e.g., robotics kits, software prototypes) to potential buyers. This platform supports registration, secure authentication, product listings, bidding, and full auction lifecycle management.
@@ -16,7 +20,7 @@
 
 | Layer            | Technology                             |
 |------------------|----------------------------------------|
-| Backend          | Django 5.1.2 (Python)                  |
+| Backend          | Django 5.2.3 (Python)                  |
 | Frontend         | HTML, CSS, Bulma                       |
 | Database         | SQLite3/MySQL                          |
 | Environment Vars | Python `dotenv`                        |
@@ -28,14 +32,14 @@
 
 ## 🛠️ Features
 
-- 🧑‍🎓 Student/Buyer Portal  
-- 🧑‍💼 Seller Dashboard  
-- 📦 Product Listings & Auction Controls  
-- 📊 Bid Management System  
-- 🧾 Purchase History Tracking  
-- 🛡️ Admin Panel with Moderation  
-- 📝 Error Logging via `RouteError`  
-- 📄 Modular Django Apps (`buyer`, `seller`)  
+- 🧑‍🎓 Student/Buyer Portal
+- 🧑‍💼 Seller Dashboard
+- 📦 Product Listings & Auction Controls
+- 📊 Bid Management System
+- 🧾 Purchase History Tracking
+- 🛡️ Admin Panel with Moderation
+- 📝 Error Logging via `RouteError`
+- 📄 Modular Django Apps (`buyer`, `seller`)
 - 💳 Payment Processing with Razorpay
 
 ---
@@ -62,26 +66,26 @@
 
 ### `seller`
 
-| Field Name | Field Type | Arguments |
-|------------|------------|-----------|
+| Field Name | Field Type | Arguments      |
+|------------|------------|----------------|
 | name       | CharField  | max_length=255 |
-| email      | EmailField | unique=True |
-| phone      | CharField  | max_length=20 |
+| email      | EmailField | unique=True    |
+| phone      | CharField  | max_length=20  |
 | password   | CharField  | max_length=256 |
 
 ### `product`
 
-| Field Name        | Field Type    | Arguments |
-|-------------------|---------------|-----------|
-| name              | CharField     | max_length=255 |
-| description       | TextField     |             |
-| category          | CharField     | max_length=50 |
-| price             | DecimalField  | max_digits=10, decimal_places=2 |
-| upi_id            | CharField     | max_length=255 |
-| contact_info      | TextField     |             |
-| bidding_enabled   | BooleanField  | default=False |
+| Field Name        | Field Type    | Arguments                                  |
+|-------------------|---------------|--------------------------------------------|
+| name              | CharField     | max_length=255                             |
+| description       | TextField     |                                            |
+| category          | CharField     | max_length=50                              |
+| price             | DecimalField  | max_digits=10, decimal_places=2            |
+| upi_id            | CharField     | max_length=255                             |
+| contact_info      | TextField     |                                            |
+| bidding_enabled   | BooleanField  | default=False                              |
 | seller            | ForeignKey    | to seller.Seller, on_delete=models.CASCADE |
-| created_at        | DateTimeField | auto_now_add=True |
+| created_at        | DateTimeField | auto_now_add=True                          |
 
 ### `bids`
 
@@ -128,13 +132,13 @@ POBucket/
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/bunny-k28/POBucket.git
-   cd POBucket
+   git clone https://github.com/bunny-k28/POBucket.xyz.git
+   cd POBucket.xyz
    ```
 
 2. **Set Up Virtual Environment**
    ```bash
-   python -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # or `venv\\Scripts\\activate` on Windows
    ```
 
@@ -146,21 +150,34 @@ POBucket/
 4. **Configure Environment Variables**
    Create a `.env` file in the root directory:
    ```env
-   SECRET_KEY=your-secret-key
-   DEBUG=True
-   RAZORPAY_KEY_ID=your-razorpay-key
-   RAZORPAY_KEY_SECRET=your-razorpay-secret
+   # Django Secret
+   SERVER_SECRET_KEY = your-django-secret-key
+
+   # Gmail credentials
+   EMAIL_HOST_USER = your-host-email
+   EMAIL_HOST_PASSWORD = host-email-app-password
+
+   # Ngrok Domain
+   NGROK_HOST = "relaxed-rational-gnu"
+
+   # MySQL server credentials
+   DATABASE = database-name
+   SQL_SERVER_USER = user-name
+   SQL_SERVER_HOST = host-ip-address
+   SQL_SERVER_PORT = host-ip-port # 3306 (default)
+   SQL_SERVER_ROOT_PASSWORD = db-root-password
+
    ```
 
 5. **Run Migrations**
    ```bash
-   python manage.py makemigrations
-   python manage.py migrate
+   python3 manage.py makemigrations
+   python3 manage.py migrate
    ```
 
 6. **Start the Development Server**
    ```bash
-   python manage.py runserver
+   python3 manage.py runserver
    ```
 
 7. **Access in Browser**
@@ -172,10 +189,10 @@ POBucket/
 
 ## 🚀 Future Enhancements
 
-- Add **Email/OTP authentication**  
-- Deploy via **Docker + Vercel or Railway**  
-- Real-time bidding with Django Channels  
-- Ratings & reviews for sellers  
+- Add **2FA/Email/OTP authentication**
+- Deploy via **Docker + Vercel or Railway**
+- Real-time bidding with Django Channels
+- Ratings & reviews for sellers
 - In-app messaging system
 - Product inventory tracking
 - Optional escrow system
@@ -184,7 +201,7 @@ POBucket/
 
 ## 👨‍💻 Author
 
-**Arman Das**  
+**Arman Das**
 _This project was developed to explore and demonstrate scalable, multi-role Django applications._
 
 ---
@@ -193,7 +210,7 @@ _This project was developed to explore and demonstrate scalable, multi-role Djan
 
 Need help or have suggestions?
 
-- 📧 Email: [pob.help@gmail.com](mailto:pob.help@gmail.com)  
+- 📧 Email: [p0b.he1pd3sk@gmail.com](mailto:p0b.he1pd3sk@gmail.com)
 - 💬 WhatsApp: [Chat on WhatsApp](https://api.whatsapp.com/send?phone=8745951248&text=POB%20NeedHelp)
 - GitHub: [github.com/bunny-k28](https://github.com/bunny-k28)
 
