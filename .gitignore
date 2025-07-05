@@ -58,7 +58,6 @@ cover/
 # Django stuff:
 *.DS_Store
 Database/
-/static/images
 *.log
 local_settings.pyl
 
@@ -160,6 +159,8 @@ cython_debug/
 
 # Project specific files
 templates/buyer/payment.html
+static/images/colorPallets
+static/images/Illustrations
 static/css/payment-btn.css
 static/css/payment.css
 static/js/payment.js
