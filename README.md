@@ -1,4 +1,4 @@
-# 🎓 P.O.Bucket.io — Academic Auction Platform
+# 🎓 P.O.Bucket.xyz — Academic Auction Platform
 
 > Empowering students to auction and monetize their academic creations.
 
