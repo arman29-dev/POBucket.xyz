@@ -1,30 +1,29 @@
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
 import os
-import dotenv
 import pymysql
 
-from pathlib import Path
-
-
-DIR_PATH = Path(__file__).resolve().parent.parent
 
 pymysql.install_as_MySQLdb()
-dotenv.load_dotenv(f'{DIR_PATH}/env/.env')
 
 
-MYSQL = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get("DATABASE"),
-        'USER': os.environ.get("SQL_SERVER_USER"),
-        'PASSWORD': os.environ.get('SQL_SERVER_ROOT_PASSWORD'),
-        'HOST': os.environ.get('SQL_SERVER_HOST'),
-        'PORT': os.environ.get('SQL_SERVER_PORT'),
-    }
-}
+def send_mail(html_content, user, subject: str):
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        from_email=os.environ.get("EMAIL_HOST_USER"),
+        to=[user.email]
+    ); msg.attach_alternative(html_content, "text/html")
+    msg.send()
 
-SQLITE3 = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': f'{DIR_PATH}/Database/db.sqlite3',
-    }
-}
+def send_wlcm_email(user):
+    html_content = render_to_string("emails/welcome.html", {'username': user.username, 'email': user.email, 'id': user.uid})
+    send_mail(html_content, user, "Welcome to P.O.B")
+
+def send_acnt_verify_mail(user, code: str):
+    html_content = render_to_string("emails/accountVerificationCode.html", {'code': code})
+    send_mail(html_content, user, "P.O.B Account Verification Code")
+
+def send_prc_email(user, code: str):
+    html_content = render_to_string("emails/passwordResetCode.html", {'code': code})
+    send_mail(html_content, user, "P.O.B Password Reset Code")

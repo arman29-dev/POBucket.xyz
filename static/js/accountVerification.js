@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         verifyButton.textContent = 'Verifying...';
 
         try {
-            const { apiUrl, id } = API_DATA;
+            const { apiUrl, uid } = API_DATA;
             // Post verification code to backend
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({
                     code: code,
-                    id: id
+                    uid: uid
                 })
             });
 

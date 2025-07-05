@@ -71,10 +71,10 @@
     </div>
     <script>
         const API_DATA = {
-            "apiUrl": "{% url 'buyer-email-verification' buyer.id|escapejs %}",
+            "apiUrl": "{% url 'buyer-email-verification' buyer.uid|escapejs %}",
             "uid": "{{ buyer.uid }}"
         }
     </script>
-    <script src="{% static 'js/accountVerification.js' %}"></script>
+    <script src="{% static 'js/accountVerification.js' %}?v=2"></script>
 </body>
 </html>

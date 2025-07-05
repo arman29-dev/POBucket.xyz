@@ -7,9 +7,10 @@ from django.contrib import messages
 from seller.models import Product, Bid
 from .models import Buyer, Payment, RouteError
 
-from .payment_utils import process_successful_payment
+from POBucket import send_wlcm_email, send_prc_email, send_acnt_verify_mail
 from .razorpay_config import create_rzp_client, RZP_TEST_ID
-from . import get_uid, login_required, send_acnt_verify_mail, send_prc_email, hide_email, send_wlcm_email
+from .payment_utils import process_successful_payment
+from . import get_uid, login_required, hide_email
 
 from nanoid import generate
 from termcolor import cprint
@@ -51,7 +52,7 @@ def login(request):
 
                 else:
                     messages.error(request, "Account not verified!! Check you welcom email for getting verification link".upper())
-                    return(request, 'loginAndRegister.html')
+                    return render(request, 'loginAndRegister.html')
 
             except Exception:
                 messages.error(request, "User does not exist")
@@ -87,7 +88,7 @@ def register(request):
             cprint(f"Email: {email} is good to go!", "green", attrs=["bold"])
             try:
                 buyer = Buyer(
-                    id=get_uid(),
+                    uid=get_uid(Buyer),
                     username=username,
                     email=email,
                     password=generate_password_hash(password),
