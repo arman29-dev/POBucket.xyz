@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.contrib import messages
+from django.urls import reverse
 
 from POBucket import get_uid, hide_email, send_wlcm_email, send_prc_email, send_acnt_verify_mail
 from .razorpay_config import create_rzp_client, RZP_TEST_ID
@@ -121,7 +122,16 @@ def email_verification(request, id):
         send_acnt_verify_mail(buyer, code)
 
         messages.info(request, f"Check {hide_email(buyer.email)} for account verification link.")
-        return render(request, "buyer/accountVerification.html", {"buyer": buyer})
+        return render(request, "accountVerification.html",
+            {
+                "user": buyer,
+                'apiUrl': reverse('buyer-email-verification',
+                    kwargs={
+                        'id': buyer.uid
+                    }
+                )
+            }
+        )
 
     if request.method == "POST":
         data = json.loads(request.body)

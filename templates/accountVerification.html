@@ -36,7 +36,7 @@
 
         <div class="email-display">
             <div class="email-label">Verification code sent to:</div>
-            <span class="user-email">{{ buyer.email }}</span>
+            <span class="user-email">{{ user.email }}</span>
         </div>
 
         <div class="verification-section">
@@ -71,9 +71,10 @@
     </div>
     <script>
         const API_DATA = {
-            "apiUrl": "{% url 'buyer-email-verification' buyer.uid|escapejs %}",
-            "uid": "{{ buyer.uid }}"
+            "apiUrl": "{{ apiUrl }}",
+            "uid": "{{ user.uid }}"
         }
+        console.log(API_DATA[0]);
     </script>
     <script src="{% static 'js/accountVerification.js' %}?v=2"></script>
 </body>
