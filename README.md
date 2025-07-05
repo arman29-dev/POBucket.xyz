@@ -195,7 +195,7 @@ Need help or have suggestions?
 
 - 📧 Email: [pob.help@gmail.com](mailto:pob.help@gmail.com)  
 - 💬 WhatsApp: [Chat on WhatsApp](https://api.whatsapp.com/send?phone=8745951248&text=POB%20NeedHelp)
-- GitHub: [github.com/bunny-k28](https://github.com/arman29-dev)
+- GitHub: [github.com/arman29-dev](https://github.com/arman29-dev)
 
 ---
 
