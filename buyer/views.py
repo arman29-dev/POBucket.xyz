@@ -32,37 +32,37 @@ def login(request):
         return render(request, "loginAndRegister.html")
 
     if request.method == "POST":
-        if (request.POST.get("email") in request.session) and (request.session[request.POST.get("email")] == True):
-            return redirect("buyer-portal", buyer=request.POST.get("email"))
+        buyer_email = request.POST.get("email")
 
-        else:
-            try:
-                buyer = get_object_or_404(Buyer, email=request.POST.get("email"))
-                cprint(f"User -> {buyer}", "yellow"); cprint(f"User Email -> {buyer.email}", "light_cyan")
+        try:
+            buyer = get_object_or_404(Buyer, email=buyer_email)
+            cprint(f"User -> {buyer}", "yellow"); cprint(f"User Email -> {buyer.email}", "light_cyan")
 
-                if buyer.is_verified:
-                    if check_password_hash(buyer.password, password=request.POST.get("password")):
-                        request.session[buyer.email] = True
-                        cprint(f"{buyer.email} authenticated successfully!!".upper(), "green", attrs=["bold"],)
-                        return redirect("buyer-portal", buyer=buyer.email)
-
-                    else:
-                        messages.error(request, "Invalid email or password!!".upper())
-                        return render(request, "loginAndRegister.html")
+            if buyer.is_verified:
+                if check_password_hash(buyer.password, password=request.POST.get("password")):
+                    request.session[f"buyer-{buyer.email}"] = True
+                    cprint(f"{buyer.email} authenticated successfully!!".upper(), "green", attrs=["bold"],)
+                    return redirect("buyer-portal", buyer=buyer.email)
 
                 else:
-                    messages.error(request, "Account not verified!! Check you welcom email for getting verification link".upper())
-                    return render(request, 'loginAndRegister.html')
+                    messages.error(request, "Invalid email or password!!".upper())
+                    return render(request, "loginAndRegister.html")
 
-            except Exception:
-                messages.error(request, "User does not exist")
-                return render(request,"loginAndRegister.html",)
+            else:
+                messages.error(request, "Account not verified!! Check you welcom email for getting verification link".upper())
+                return render(request, 'loginAndRegister.html')
+
+        except Exception:
+            messages.error(request, "User does not exist")
+            return render(request,"loginAndRegister.html",)
 
 
 # logout route
 def logout(request, buyer):
     if request.session:
-        request.session.pop(buyer, None)
+        request.session.pop(f"buyer-{buyer}", None)
+
+    messages.warning(request, 'You have been logged out.')
     return redirect("buyer-login")
 
 

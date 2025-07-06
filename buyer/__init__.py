@@ -14,7 +14,7 @@ def login_required(view_func):
         buyer_email = kwargs.get('buyer')
 
         is_authenticated = False
-        if buyer_email and request.session.get(buyer_email) == True:
+        if buyer_email and request.session.get(f"buyer-{buyer_email}") == True:
             is_authenticated = True
 
         if not is_authenticated:
