@@ -1,8 +1,11 @@
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 from pyotp import random_base32
+from datetime import timedelta
 from pyotp.totp import TOTP
+from secrets import choice
 
 
 class Seller(models.Model):
@@ -13,22 +16,69 @@ class Seller(models.Model):
     phone = models.CharField(max_length=20, null=True)
     password = models.CharField(max_length=122)
 
+    is_verified = models.BooleanField(default=False)
+
+    verification_code = models.CharField(max_length=6, blank=True, null=True)
+    code_expires_at = models.DateTimeField(blank=True, null=True)
+
     twoFA_secret = models.CharField(max_length=32, blank=True, null=True)
     qr_code_path = models.ImageField(upload_to='auth-QRs/', blank=True, null=True)
 
-    def generate_2fa_secret(self):
+    def generate_verification_code(self, expiry_minutes=5):
+        code = ''.join(choice('0123456789') for _ in range(6))
+        self.verification_code = code
+        self.code_expires_at = timezone.now() + timedelta(minutes=expiry_minutes)
+        self.save()
+
+        return code
+
+    def validate_code(self, submitted_code):
+        if not self.verification_code or not self.code_expires_at:return False, "No code generated"
+        if self.verification_code != submitted_code: return False, "Invalid code"
+        if timezone.now() > self.code_expires_at: return False, "Code expired"
+
+        return True, "Code is valid"
+
+    def clear_verification_code(self):
+        self.verification_code = None
+        self.code_expires_at = None
+        self.save()
+
+    def get_otp_uri(self):
         if not self.twoFA_secret:
             self.twoFA_secret = random_base32()
             self.save()
 
-    def get_otp_uri(self):
         return TOTP(str(self.twoFA_secret)).provisioning_uri(
             name=str(self.email),
             issuer_name="P.O.Bucket"
         )
 
+    def verify2FAcode(self, code):
+        totp = TOTP(str(self.twoFA_secret))
+        if totp.verify(code): return True
+
+        try:
+            backup_codes = BackupCodes.objects.get(seller=self)
+            if backup_codes and code in backup_codes.codes:
+                backup_codes.codes.remove(code)
+                backup_codes.save()
+                return True
+            return False
+
+        except ObjectDoesNotExist: pass
+        return False
+
     def __str__(self) -> str:
         return str(self.username)
+
+
+class BackupCodes(models.Model):
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='backup_codes')
+    codes = models.JSONField(default=list, blank=True)
+
+    def __str__(self):
+        return str(self.seller)
 
 
 class Product(models.Model):

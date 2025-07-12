@@ -1,5 +1,6 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 from secrets import choice
 
@@ -35,12 +36,18 @@ def hide_email(email: str) -> str:
         raise ValueError("Invalid email format")
 
 
-def send_mail(html_content, user, subject: str):
+def send_mail(html_content, user, subject: str, file: str|None=None):
     msg = EmailMultiAlternatives(
         subject=subject,
         from_email=os.environ.get("EMAIL_HOST_USER"),
         to=[user.email]
-    ); msg.attach_alternative(html_content, "text/html")
+    )
+
+    msg.attach_alternative(html_content, "text/html")
+
+    if (file is not None) and (os.path.exists(file)):
+        msg.attach_file(file)
+
     msg.send()
 
 def send_wlcm_email(user):
@@ -54,3 +61,11 @@ def send_acnt_verify_mail(user, code: str):
 def send_prc_email(user, code: str):
     html_content = render_to_string("emails/passwordResetCode.html", {'code': code})
     send_mail(html_content, user, "P.O.B Password Reset Code")
+
+def send_2FA_BC_email(user, file: str):
+    html_content = render_to_string("emails/sellerWelcomeW2FA.html",
+        {
+            'email': user.email,
+            'uid': user.uid,
+        }
+    ); send_mail(html_content, user, "P.O.B 2FA Code", file=file)

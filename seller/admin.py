@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Product, Bid, Sale
+from .models import Product, BackupCodes, Bid, Sale
 from .models import RouteError
 from .models import Seller
 
@@ -17,6 +17,10 @@ class SellerAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'fullname', 'phone')
     search_fields = ('username', 'email')
 
+class BackupCodesAdmin(admin.ModelAdmin):
+    list_display = ('seller',)
+    search_fields = ('seller',)
+
 class SaleAdmin(admin.ModelAdmin):
     list_display = ('product', 'sale_date', 'final_price', 'buyer')
     search_fields = ('product', 'sale_date', 'seller')
@@ -26,6 +30,7 @@ class BidAdmin(admin.ModelAdmin):
     search_fields = ('product', 'bidder')
 
 
+admin.site.register(BackupCodes, BackupCodesAdmin)
 admin.site.register(RouteError, RouteErrorAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Seller, SellerAdmin)

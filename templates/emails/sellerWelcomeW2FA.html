@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #e2e8f0;
+            background-color: #0f172a;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background-color: #1e293b;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .success-icon {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #f1f5f9;
+        }
+
+        .welcome-message {
+            font-size: 18px;
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .user-info {
+            background-color: #334155;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 25px 0;
+            border: 1px solid #475569;
+        }
+
+        .user-details {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .detail-item p {
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .user-email {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            font-weight: 600;
+            color: #f1f5f9;
+            background-color: #475569;
+            padding: 8px 15px;
+            border-radius: 4px;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 480px) {
+            .user-details {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .next-steps {
+            background-color: #1e40af;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 25px 0;
+        }
+
+        .next-steps h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .next-steps ul {
+            text-align: left;
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .next-steps li {
+            margin-bottom: 8px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: black;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            color: #94a3b8;
+        }
+
+        .support-link {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .support-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .welcome-message {
+                font-size: 16px;
+            }
+
+            .next-steps {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background rounded rectangle -->
+                <rect width="80" height="50" rx="8" fill="#3b82f6"/>
+                <rect x="2" y="2" width="76" height="46" rx="6" fill="#1e40af"/>
+
+                <!-- P.O.B text -->
+                <text x="40" y="32" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#ffffff">P.O.B</text>
+
+                <!-- Decorative dots -->
+                <circle cx="15" cy="15" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="65" cy="15" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="15" cy="35" r="2" fill="#60a5fa" opacity="0.7"/>
+                <circle cx="65" cy="35" r="2" fill="#60a5fa" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <h1>Welcome to P.O.B!</h1>
+
+        <div class="welcome-message">
+            Registration Successful
+        </div>
+
+        <p>Congratulations! Your account has been created successfully. You're now part of the P.O.B community.</p>
+
+        <div class="user-info">
+            <p><strong>Account Details:</strong></p>
+            <div class="user-details">
+                <div class="detail-item">
+                    <p>Seller ID:</p>
+                    <span class="user-email">{{ uid }}</span>
+                </div>
+                <div class="detail-item">
+                    <p>Email address:</p>
+                    <span class="user-email">{{ email }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-steps">
+            <h3>What's Next?</h3>
+            <ul>
+                <li>Save the 2FA Backup Codes safely with you.</li>
+                <li>Explore our platform features</li>
+                <li>Join our <a style="color: greenyellow" href="https://discord.gg/rbN23Fhxa8" target="_blank">community</a> discussions</li>
+            </ul>
+        </div>
+
+        <a href="http://127.0.0.1:8000/seller/dashboard/{{ email }}" target="_blank" class="cta-button">Visit Dashboard</a>
+
+        <div class="footer">
+            <p>Need help getting started? <a href="mailto:p0b.he1pd3sk@gmail.com" class="support-link">Contact our support team</a></p>
+            <p>Welcome aboard! We're excited to have you with us.</p>
+        </div>
+    </div>
+</body>
+</html>
